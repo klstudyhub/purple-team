@@ -1,178 +1,911 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Purple Team Roadmap — 900 Days to Top 1%</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Purple Team Roadmap — 900 Days to Top 1%</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* === RESET & BASE === */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #050810;
+  --bg2: #080d18;
+  --bg3: #0d1526;
+  --border: #1a2540;
+  --border2: #243050;
+  --text: #c8d8f0;
+  --text2: #6a85b0;
+  --text3: #3a5080;
+  --accent: #00ff9d;
+  --accent2: #00d4ff;
+  --red: #ff4444;
+  --orange: #ff6b35;
+  --purple: #9b59ff;
+  --gold: #ffd700;
+  --pink: #ff00ff;
+  --font-mono: 'Space Mono', monospace;
+  --font-display: 'Syne', sans-serif;
+  --nav-h: 56px;
+  --sidebar-w: 280px;
+  --bottom-h: 56px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.6;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* SCROLLBAR */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: var(--bg2); }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+/* === BOOT SCREEN === */
+#boot-screen {
+  position: fixed; inset: 0; z-index: 9999;
+  background: var(--bg);
+  display: flex; align-items: center; justify-content: center;
+  animation: boot-fade 0.5s ease 2.8s forwards;
+}
+@keyframes boot-fade { to { opacity: 0; pointer-events: none; } }
+
+.boot-content { text-align: center; }
+.boot-logo {
+  font-family: var(--font-display);
+  font-size: 3rem; font-weight: 800;
+  letter-spacing: 0.15em;
+  color: var(--text);
+  margin-bottom: 2rem;
+}
+.boot-logo span { color: var(--accent); }
+
+.boot-bar-wrap {
+  width: 300px; height: 2px;
+  background: var(--border);
+  margin: 0 auto 1rem;
+  overflow: hidden;
+}
+.boot-bar {
+  height: 100%; width: 0;
+  background: var(--accent);
+  animation: boot-load 2s ease forwards;
+  box-shadow: 0 0 12px var(--accent);
+}
+@keyframes boot-load { to { width: 100%; } }
+
+.boot-text {
+  font-size: 0.65rem; color: var(--text3);
+  letter-spacing: 0.15em;
+  animation: blink 0.5s step-end infinite;
+}
+@keyframes blink { 50% { opacity: 0; } }
+
+/* === MODALS === */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 8000;
+  background: rgba(5, 8, 16, 0.92);
+  display: flex; align-items: center; justify-content: center;
+  backdrop-filter: blur(8px);
+}
+.modal-overlay.hidden { display: none; }
+
+.modal-box {
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  padding: 2.5rem;
+  max-width: 460px; width: 90%;
+  position: relative;
+  box-shadow: 0 0 60px rgba(0,255,157,0.08);
+}
+.modal-box::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+}
+
+.modal-label {
+  font-size: 0.6rem; letter-spacing: 0.2em;
+  color: var(--accent); margin-bottom: 1rem;
+}
+.modal-box h2 {
+  font-family: var(--font-display);
+  font-size: 1.5rem; font-weight: 700;
+  color: var(--text); margin-bottom: 0.75rem;
+}
+.modal-box p { color: var(--text2); margin-bottom: 1.5rem; font-size: 0.85rem; }
+
+.modal-box input[type="date"] {
+  width: 100%; padding: 0.75rem 1rem;
+  background: var(--bg3); border: 1px solid var(--border2);
+  color: var(--text); font-family: var(--font-mono); font-size: 0.9rem;
+  margin-bottom: 1rem;
+  outline: none;
+  color-scheme: dark;
+}
+.modal-box input[type="date"]:focus { border-color: var(--accent); }
+
+.modal-note { font-size: 0.65rem; color: var(--text3); margin-top: 0.75rem; margin-bottom: 0; }
+.modal-buttons { display: flex; gap: 0.75rem; margin-top: 1rem; }
+
+.checkpoint-box { max-width: 520px; }
+
+#cp-questions { margin: 1.5rem 0; display: flex; flex-direction: column; gap: 0.75rem; }
+.cp-question {
+  display: flex; align-items: flex-start; gap: 0.75rem;
+  padding: 0.75rem; background: var(--bg3);
+  border-left: 2px solid var(--accent);
+  font-size: 0.85rem;
+}
+.cp-q-icon { color: var(--accent); flex-shrink: 0; margin-top: 1px; }
+
+/* === BUTTONS === */
+.btn-primary {
+  background: var(--accent); color: var(--bg);
+  border: none; padding: 0.75rem 1.5rem;
+  font-family: var(--font-mono); font-size: 0.75rem;
+  font-weight: 700; letter-spacing: 0.1em;
+  cursor: pointer; width: 100%;
+  transition: all 0.2s;
+}
+.btn-primary:hover { background: #00ffb0; box-shadow: 0 0 20px rgba(0,255,157,0.4); }
+
+.btn-secondary {
+  background: transparent; color: var(--text2);
+  border: 1px solid var(--border2); padding: 0.75rem 1.5rem;
+  font-family: var(--font-mono); font-size: 0.75rem;
+  letter-spacing: 0.1em; cursor: pointer; flex: 1;
+  transition: all 0.2s;
+}
+.btn-secondary:hover { border-color: var(--text2); color: var(--text); }
+
+.btn-danger {
+  background: var(--red); color: #fff;
+  border: none; padding: 0.75rem 1.5rem;
+  font-family: var(--font-mono); font-size: 0.75rem;
+  font-weight: 700; letter-spacing: 0.1em;
+  cursor: pointer; flex: 1;
+  transition: all 0.2s;
+}
+.btn-danger:hover { background: #ff6666; }
+
+.btn-ghost {
+  background: transparent; color: var(--text2);
+  border: 1px solid var(--border);
+  padding: 0.4rem 0.85rem;
+  font-family: var(--font-mono); font-size: 0.65rem;
+  letter-spacing: 0.1em; cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+/* === TOP NAV === */
+#top-nav {
+  position: fixed; top: 0; left: 0; right: 0; height: var(--nav-h);
+  background: rgba(5,8,16,0.95); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 1.5rem; z-index: 100;
+}
+.nav-brand {
+  font-family: var(--font-display);
+  font-size: 1.1rem; font-weight: 800;
+  letter-spacing: 0.12em; color: var(--text);
+}
+.nav-brand span { color: var(--accent); }
+
+.nav-center { display: flex; align-items: center; gap: 0.5rem; }
+.nav-label { font-size: 0.6rem; letter-spacing: 0.15em; color: var(--text3); }
+.nav-day {
+  font-family: var(--font-display); font-size: 1.4rem; font-weight: 800;
+  color: var(--accent);
+}
+
+.nav-actions { display: flex; gap: 0.5rem; }
+
+/* === MAIN LAYOUT === */
+#main-layout {
+  display: flex;
+  margin-top: var(--nav-h);
+  min-height: calc(100vh - var(--nav-h) - var(--bottom-h));
+}
+
+/* === SIDEBAR === */
+#sidebar {
+  width: var(--sidebar-w);
+  min-width: var(--sidebar-w);
+  background: var(--bg2);
+  border-right: 1px solid var(--border);
+  height: calc(100vh - var(--nav-h) - var(--bottom-h));
+  position: sticky; top: var(--nav-h);
+  overflow-y: auto;
+  padding: 1.25rem 1rem;
+  display: flex; flex-direction: column; gap: 1.5rem;
+}
+
+.sidebar-section {}
+.sidebar-label {
+  font-size: 0.55rem; letter-spacing: 0.2em;
+  color: var(--text3); margin-bottom: 0.75rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.big-percent {
+  font-family: var(--font-display); font-size: 2.5rem; font-weight: 800;
+  color: var(--accent); text-align: center;
+  line-height: 1; margin-bottom: 0.75rem;
+}
+
+.progress-ring-wrap {
+  position: relative; width: 120px; height: 120px; margin: 0 auto;
+}
+.progress-ring { transform: rotate(-90deg); }
+.ring-bg { fill: none; stroke: var(--border2); stroke-width: 8; }
+.ring-fill {
+  fill: none; stroke: var(--accent); stroke-width: 8;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.8s ease;
+  filter: drop-shadow(0 0 6px var(--accent));
+}
+.ring-inner {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+}
+.ring-tasks { font-family: var(--font-display); font-size: 1rem; font-weight: 700; color: var(--text); }
+.ring-label { font-size: 0.5rem; letter-spacing: 0.15em; color: var(--text3); }
+
+.time-stat {
+  display: flex; align-items: baseline; justify-content: space-between;
+  padding: 0.35rem 0; border-bottom: 1px solid var(--border);
+}
+.ts-val { font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; color: var(--text); }
+.ts-key { font-size: 0.55rem; letter-spacing: 0.15em; color: var(--text3); }
+
+/* Phase nav in sidebar */
+.phase-nav-item {
+  display: flex; align-items: center; gap: 0.6rem;
+  padding: 0.4rem 0.5rem; cursor: pointer;
+  border-radius: 2px; transition: all 0.15s;
+  margin-bottom: 0.2rem;
+}
+.phase-nav-item:hover { background: var(--bg3); }
+.phase-nav-item.active { background: var(--bg3); }
+.pni-icon { font-size: 0.9rem; flex-shrink: 0; }
+.pni-text { font-size: 0.7rem; flex: 1; color: var(--text2); }
+.pni-pct {
+  font-family: var(--font-display); font-size: 0.7rem; font-weight: 700;
+}
+
+/* Cert sidebar */
+.cert-item {
+  padding: 0.4rem 0; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 0.5rem;
+}
+.cert-day-badge {
+  font-size: 0.55rem; padding: 0.15rem 0.35rem;
+  background: var(--bg3); border: 1px solid var(--border2);
+  color: var(--text3); white-space: nowrap;
+}
+.cert-name { font-size: 0.65rem; color: var(--text2); flex: 1; line-height: 1.3; }
+.cert-done { color: var(--accent); font-size: 0.8rem; }
+.cert-item.done .cert-name { color: var(--text3); text-decoration: line-through; }
+
+/* Streak */
+.streak-display { text-align: center; margin-bottom: 0.75rem; }
+.streak-num { font-family: var(--font-display); font-size: 2rem; font-weight: 800; color: var(--gold); }
+.streak-label { display: block; font-size: 0.55rem; letter-spacing: 0.15em; color: var(--text3); }
+
+.btn-log {
+  width: 100%; padding: 0.5rem;
+  background: transparent; border: 1px solid var(--accent);
+  color: var(--accent); font-family: var(--font-mono); font-size: 0.65rem;
+  letter-spacing: 0.1em; cursor: pointer; margin-bottom: 0.75rem;
+  transition: all 0.2s;
+}
+.btn-log:hover { background: var(--accent); color: var(--bg); }
+.btn-log.logged { background: var(--accent); color: var(--bg); cursor: default; }
+
+.streak-grid {
+  display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px;
+}
+.streak-cell {
+  aspect-ratio: 1; border-radius: 2px;
+  background: var(--border);
+}
+.streak-cell.logged { background: var(--accent); box-shadow: 0 0 4px var(--accent); }
+.streak-cell.today { border: 1px solid var(--accent2); }
+
+/* === CONTENT === */
+#content {
+  flex: 1; overflow-y: auto;
+  padding: 2rem;
+  height: calc(100vh - var(--nav-h) - var(--bottom-h));
+}
+
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+/* === PAGE HEADER === */
+.page-header { margin-bottom: 2.5rem; }
+.page-eyebrow {
+  font-size: 0.6rem; letter-spacing: 0.25em;
+  color: var(--accent); margin-bottom: 0.5rem;
+}
+.page-header h1 {
+  font-family: var(--font-display); font-size: 2rem; font-weight: 800;
+  color: var(--text); line-height: 1.1; margin-bottom: 0.5rem;
+}
+.page-subtitle { color: var(--text2); font-size: 0.85rem; }
+
+.page-title-block { margin-bottom: 1.5rem; }
+
+.ground-truth-box {
+  border: 1px solid var(--border2);
+  background: var(--bg2);
+  padding: 1.25rem;
+  position: relative;
+}
+.ground-truth-box::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: var(--red);
+}
+.gt-label {
+  font-size: 0.55rem; letter-spacing: 0.2em; color: var(--red);
+  margin-bottom: 0.75rem;
+}
+.gt-items { display: flex; flex-direction: column; gap: 0.4rem; }
+.gt-item {
+  font-size: 0.78rem; color: var(--text2);
+  padding-left: 1rem;
+  position: relative;
+}
+.gt-item::before {
+  content: '→'; position: absolute; left: 0;
+  color: var(--red);
+}
+
+/* === SECTION LABEL === */
+.section-label {
+  font-size: 0.55rem; letter-spacing: 0.25em;
+  color: var(--text3); margin: 2rem 0 1rem;
+}
+
+/* === CURRENT PHASE CARD === */
+.current-phase-card {
+  border: 1px solid var(--border2);
+  background: var(--bg2);
+  padding: 1.5rem;
+  position: relative; overflow: hidden;
+}
+.current-phase-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: var(--phase-color, var(--accent));
+}
+.cpc-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+.cpc-icon { font-size: 2rem; }
+.cpc-meta {}
+.cpc-phase-num { font-size: 0.6rem; letter-spacing: 0.2em; color: var(--text3); }
+.cpc-title { font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; }
+.cpc-days { font-size: 0.75rem; color: var(--text2); }
+.cpc-goal { font-size: 0.82rem; color: var(--text2); margin-bottom: 1rem; line-height: 1.7; }
+.cpc-progress-bar { height: 4px; background: var(--border2); margin-bottom: 0.4rem; }
+.cpc-progress-fill { height: 100%; background: var(--phase-color, var(--accent)); transition: width 0.6s ease; }
+.cpc-progress-label { font-size: 0.6rem; color: var(--text3); }
+
+/* === CHECKPOINT CARDS === */
+.checkpoint-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; }
+.cp-card {
+  border: 1px solid var(--border);
+  background: var(--bg2); padding: 1.25rem;
+  position: relative; cursor: pointer;
+  transition: all 0.2s;
+}
+.cp-card:hover { border-color: var(--border2); }
+.cp-card.passed { border-color: var(--accent); }
+.cp-card.active-cp { border-color: var(--gold); }
+.cp-card.future { opacity: 0.6; }
+
+.cp-card-day {
+  font-family: var(--font-display); font-size: 0.7rem;
+  color: var(--text3); margin-bottom: 0.25rem;
+}
+.cp-card-title {
+  font-family: var(--font-display); font-size: 1rem; font-weight: 700;
+  margin-bottom: 0.75rem;
+}
+.cp-card.passed .cp-card-title { color: var(--accent); }
+.cp-card.active-cp .cp-card-title { color: var(--gold); }
+
+.cp-status {
+  font-size: 0.65rem; letter-spacing: 0.1em;
+  padding: 0.2rem 0.5rem; display: inline-block;
+}
+.cp-status.pass { background: rgba(0,255,157,0.15); color: var(--accent); }
+.cp-status.current { background: rgba(255,215,0,0.15); color: var(--gold); }
+.cp-status.upcoming { background: var(--bg3); color: var(--text3); }
+
+.cp-toggle { font-size: 0.65rem; color: var(--text3); margin-top: 0.75rem; cursor: pointer; }
+.cp-toggle:hover { color: var(--accent2); }
+
+/* === CERT TIMELINE === */
+.cert-timeline-grid { display: flex; flex-direction: column; gap: 0; }
+.ct-item {
+  display: grid; grid-template-columns: 80px 20px 1fr;
+  gap: 0 1rem; align-items: stretch;
+}
+.ct-day {
+  text-align: right; padding: 1rem 0;
+  font-family: var(--font-display); font-weight: 700; font-size: 0.85rem;
+  color: var(--text2);
+}
+.ct-line-col { display: flex; flex-direction: column; align-items: center; }
+.ct-dot {
+  width: 12px; height: 12px; border-radius: 50%;
+  border: 2px solid var(--border2);
+  background: var(--bg); margin-top: 1.15rem; flex-shrink: 0;
+  transition: all 0.3s;
+}
+.ct-item.done .ct-dot { background: var(--accent); border-color: var(--accent); box-shadow: 0 0 8px var(--accent); }
+.ct-item.next-up .ct-dot { border-color: var(--gold); box-shadow: 0 0 8px var(--gold); }
+.ct-connector { flex: 1; width: 2px; background: var(--border); }
+.ct-last .ct-connector { display: none; }
+
+.ct-info {
+  padding: 0.75rem 0 0.75rem 0;
+  border-bottom: 1px solid var(--border);
+}
+.ct-item:last-child .ct-info { border-bottom: none; }
+.ct-name { font-size: 0.82rem; color: var(--text); margin-bottom: 0.2rem; }
+.ct-item.done .ct-name { text-decoration: line-through; color: var(--text3); }
+.ct-meta { display: flex; gap: 0.75rem; }
+.ct-cost { font-size: 0.65rem; color: var(--text3); }
+.ct-priority {
+  font-size: 0.55rem; letter-spacing: 0.1em; padding: 0.1rem 0.4rem;
+}
+.ct-priority.CRITICAL { background: rgba(255,68,68,0.2); color: var(--red); }
+.ct-priority.HIGH { background: rgba(0,212,255,0.2); color: var(--accent2); }
+.ct-priority.CAREER-DEFINING { background: rgba(155,89,255,0.2); color: var(--purple); }
+
+.cert-done-btn {
+  font-size: 0.6rem; padding: 0.2rem 0.5rem; margin-top: 0.35rem;
+  background: transparent; border: 1px solid var(--border2);
+  color: var(--text3); cursor: pointer; font-family: var(--font-mono);
+  transition: all 0.2s; display: inline-block;
+}
+.cert-done-btn:hover { border-color: var(--accent); color: var(--accent); }
+.cert-done-btn.earned { border-color: var(--accent); color: var(--accent); cursor: default; }
+
+/* === WEEK SCHEDULE === */
+.week-schedule {
+  display: grid; grid-template-columns: repeat(7, 1fr); gap: 0.5rem;
+}
+.day-card {
+  background: var(--bg2); border: 1px solid var(--border);
+  padding: 0.75rem 0.5rem; text-align: center;
+}
+.day-name {
+  font-family: var(--font-display); font-size: 0.75rem; font-weight: 700;
+  color: var(--accent); margin-bottom: 0.4rem;
+}
+.day-task { font-size: 0.6rem; color: var(--text2); line-height: 1.5; }
+
+/* === CODE BLOCK === */
+.code-block {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-left: 3px solid var(--accent2);
+  padding: 1.5rem; overflow-x: auto;
+}
+.code-block pre {
+  font-family: var(--font-mono); font-size: 0.72rem;
+  color: var(--text2); white-space: pre; line-height: 1.7;
+}
+
+/* === PHASES CONTAINER === */
+#phases-container { display: flex; flex-direction: column; gap: 2rem; }
+
+.phase-block {
+  border: 1px solid var(--border);
+  background: var(--bg2);
+  position: relative; overflow: hidden;
+}
+.phase-block::before {
+  content: ''; position: absolute; top: 0; left: 0; bottom: 0; width: 3px;
+  background: var(--phase-color, var(--accent));
+}
+
+.phase-header {
+  padding: 1.25rem 1.25rem 1.25rem 1.75rem;
+  cursor: pointer;
+  display: flex; align-items: center; gap: 1rem;
+  transition: background 0.2s;
+}
+.phase-header:hover { background: var(--bg3); }
+
+.ph-icon { font-size: 1.5rem; }
+.ph-meta { flex: 1; }
+.ph-num { font-size: 0.55rem; letter-spacing: 0.2em; color: var(--text3); }
+.ph-title { font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; }
+.ph-days { font-size: 0.7rem; color: var(--text2); }
+.ph-right { text-align: right; }
+.ph-pct { font-family: var(--font-display); font-size: 1.4rem; font-weight: 800; }
+.ph-tasks-count { font-size: 0.6rem; color: var(--text3); }
+.ph-toggle { font-size: 0.8rem; color: var(--text3); margin-left: 0.75rem; transition: transform 0.3s; }
+.ph-toggle.open { transform: rotate(180deg); }
+
+.phase-progress { height: 3px; background: var(--border); margin: 0 1.75rem; }
+.phase-progress-fill { height: 100%; transition: width 0.6s ease; }
+
+.phase-body { display: none; padding: 1.25rem 1.75rem 1.5rem; }
+.phase-body.open { display: block; }
+
+.phase-goal {
+  font-size: 0.82rem; color: var(--text2);
+  margin-bottom: 0.75rem; line-height: 1.7;
+  padding: 0.75rem; background: var(--bg3);
+  border-left: 2px solid var(--phase-color, var(--accent));
+}
+
+.phase-warning {
+  font-size: 0.75rem; color: var(--red);
+  margin-bottom: 1.5rem;
+  padding: 0.6rem 0.75rem; background: rgba(255,68,68,0.08);
+  border-left: 2px solid var(--red);
+}
+
+.block-group { margin-bottom: 1.5rem; }
+.block-title {
+  font-size: 0.65rem; letter-spacing: 0.15em;
+  color: var(--text3); margin-bottom: 0.75rem;
+  padding-bottom: 0.35rem; border-bottom: 1px solid var(--border);
+}
+
+.task-item {
+  display: flex; align-items: flex-start; gap: 0.75rem;
+  padding: 0.5rem 0.5rem; cursor: pointer;
+  border-radius: 2px; transition: all 0.15s;
+  margin-bottom: 0.15rem;
+}
+.task-item:hover { background: var(--bg3); }
+
+.task-cb {
+  width: 14px; height: 14px; flex-shrink: 0; margin-top: 2px;
+  border: 1px solid var(--border2); background: var(--bg3);
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s;
+}
+.task-item.done .task-cb { background: var(--accent); border-color: var(--accent); }
+.task-cb-check { font-size: 0.55rem; color: var(--bg); display: none; }
+.task-item.done .task-cb-check { display: block; }
+.task-item.done .task-text { color: var(--text3); text-decoration: line-through; }
+
+.task-text { font-size: 0.78rem; color: var(--text); line-height: 1.5; flex: 1; }
+
+.task-badge {
+  font-size: 0.5rem; padding: 0.1rem 0.35rem; flex-shrink: 0;
+  margin-top: 3px; letter-spacing: 0.05em;
+}
+.badge-milestone { background: rgba(0,212,255,0.2); color: var(--accent2); }
+.badge-project { background: rgba(155,89,255,0.2); color: var(--purple); }
+.badge-platform { background: rgba(0,255,157,0.15); color: var(--accent); }
+.badge-ctf { background: rgba(255,107,53,0.2); color: var(--orange); }
+.badge-cert { background: rgba(255,215,0,0.2); color: var(--gold); }
+.badge-lab { background: rgba(255,68,68,0.15); color: var(--red); }
+.badge-setup { background: rgba(138,143,160,0.15); color: var(--text3); }
+.badge-apply { background: rgba(0,255,157,0.15); color: var(--accent); }
+
+/* === CHECKPOINTS PAGE === */
+.checkpoint-full-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 1.5rem; }
+.cp-full-card {
+  border: 1px solid var(--border);
+  background: var(--bg2); padding: 1.5rem;
+  position: relative;
+}
+.cp-full-card.passed { border-color: var(--accent); }
+.cp-full-card.active-cp { border-color: var(--gold); }
+.cp-full-card.passed::before,
+.cp-full-card.active-cp::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+}
+.cp-full-card.passed::before { background: var(--accent); }
+.cp-full-card.active-cp::before { background: var(--gold); }
+
+.cpf-day { font-size: 0.6rem; letter-spacing: 0.2em; color: var(--text3); margin-bottom: 0.3rem; }
+.cpf-title {
+  font-family: var(--font-display); font-size: 1.2rem; font-weight: 700;
+  margin-bottom: 1rem;
+}
+.cpf-status {
+  font-size: 0.6rem; letter-spacing: 0.1em;
+  padding: 0.2rem 0.6rem; margin-bottom: 1.25rem;
+  display: inline-block;
+}
+.cpf-status.pass { background: rgba(0,255,157,0.15); color: var(--accent); }
+.cpf-status.current { background: rgba(255,215,0,0.15); color: var(--gold); }
+.cpf-status.future { background: var(--bg3); color: var(--text3); }
+
+.cpf-questions { display: flex; flex-direction: column; gap: 0.6rem; }
+.cpf-q {
+  display: flex; gap: 0.75rem; align-items: flex-start;
+  padding: 0.6rem 0.75rem; background: var(--bg3);
+  font-size: 0.78rem; color: var(--text2); line-height: 1.5;
+}
+.cpf-q-icon { color: var(--accent); flex-shrink: 0; }
+.cp-full-card.future .cpf-q-icon { color: var(--text3); }
+
+.cp-mark-btn {
+  margin-top: 1rem; width: 100%; padding: 0.5rem;
+  background: transparent; border: 1px solid var(--border2);
+  color: var(--text3); font-family: var(--font-mono); font-size: 0.65rem;
+  letter-spacing: 0.1em; cursor: pointer; transition: all 0.2s;
+}
+.cp-mark-btn:hover { border-color: var(--accent); color: var(--accent); }
+.cp-mark-btn.marked { border-color: var(--accent); color: var(--accent); cursor: default; }
+.cp-mark-btn.future-btn { opacity: 0.4; cursor: not-allowed; }
+
+/* === NOTES === */
+.notes-toolbar {
+  display: flex; gap: 0.75rem; margin-bottom: 1.5rem;
+}
+#notes-search {
+  flex: 1; padding: 0.6rem 0.85rem;
+  background: var(--bg2); border: 1px solid var(--border2);
+  color: var(--text); font-family: var(--font-mono); font-size: 0.8rem;
+  outline: none;
+}
+#notes-search:focus { border-color: var(--accent2); }
+.notes-toolbar .btn-primary { width: auto; }
+
+#notes-container { display: flex; flex-direction: column; gap: 1rem; }
+
+.note-card {
+  background: var(--bg2); border: 1px solid var(--border);
+  padding: 1.25rem; position: relative;
+}
+.note-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 0.75rem; }
+.note-day { font-family: var(--font-display); font-size: 1rem; font-weight: 700; color: var(--accent2); }
+.note-date { font-size: 0.65rem; color: var(--text3); flex: 1; }
+.note-delete {
+  background: transparent; border: none; color: var(--text3);
+  cursor: pointer; font-size: 0.8rem; padding: 0.2rem;
+  transition: color 0.2s;
+}
+.note-delete:hover { color: var(--red); }
+.note-text { font-size: 0.82rem; color: var(--text2); line-height: 1.7; white-space: pre-wrap; }
+
+.note-add-form {
+  background: var(--bg2); border: 1px solid var(--border2);
+  padding: 1.25rem; margin-bottom: 1rem;
+  border-top: 2px solid var(--accent2);
+}
+.note-add-form textarea {
+  width: 100%; min-height: 100px; padding: 0.75rem;
+  background: var(--bg3); border: 1px solid var(--border);
+  color: var(--text); font-family: var(--font-mono); font-size: 0.82rem;
+  resize: vertical; outline: none; line-height: 1.6;
+  margin-bottom: 0.75rem;
+}
+.note-add-form textarea:focus { border-color: var(--accent2); }
+.note-form-actions { display: flex; gap: 0.5rem; }
+.note-form-actions .btn-primary { width: auto; flex: 1; }
+.note-form-actions .btn-secondary { flex: 0; width: auto; }
+
+.notes-empty {
+  text-align: center; padding: 3rem;
+  color: var(--text3); font-size: 0.82rem;
+}
+
+/* === BOTTOM NAV === */
+#bottom-nav {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  height: var(--bottom-h);
+  background: rgba(5,8,16,0.97); backdrop-filter: blur(12px);
+  border-top: 1px solid var(--border);
+  display: flex; z-index: 100;
+}
+.tab-btn {
+  flex: 1; background: transparent; border: none; border-top: 2px solid transparent;
+  color: var(--text3); font-family: var(--font-mono); font-size: 0.6rem;
+  letter-spacing: 0.08em; cursor: pointer; transition: all 0.2s;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.2rem;
+}
+.tab-btn:hover { color: var(--text2); }
+.tab-btn.active { color: var(--accent); border-top-color: var(--accent); }
+
+/* === RESPONSIVE === */
+@media (max-width: 900px) {
+  #sidebar { display: none; }
+  .week-schedule { grid-template-columns: repeat(3, 1fr); }
+  #content { padding: 1.25rem; }
+}
+@media (max-width: 600px) {
+  .checkpoint-grid, .checkpoint-full-grid { grid-template-columns: 1fr; }
+  .cert-timeline-grid { font-size: 0.75rem; }
+  .week-schedule { grid-template-columns: 1fr 1fr; }
+  .page-header h1 { font-size: 1.4rem; }
+  .nav-center { display: none; }
+}
+
+/* === ANIMATIONS === */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.phase-block, .cp-full-card, .note-card {
+  animation: fadeInUp 0.4s ease both;
+}
+
+/* Scanline overlay */
+body::after {
+  content: '';
+  position: fixed; inset: 0; pointer-events: none; z-index: 9998;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.03) 2px,
+    rgba(0,0,0,0.03) 4px
+  );
+}
+
+</style>
 </head>
 <body>
 
-  <!-- BOOT SCREEN -->
-  <div id="boot-screen">
-    <div class="boot-content">
-      <div class="boot-logo">GREESH<span>SEC</span></div>
-      <div class="boot-bar-wrap"><div class="boot-bar"></div></div>
-      <div class="boot-text" id="boot-text">INITIALIZING ROADMAP SYSTEM...</div>
+<!-- BOOT SCREEN -->
+<div id="boot-screen">
+  <div class="boot-content">
+    <div class="boot-logo">GREESH<span>SEC</span></div>
+    <div class="boot-bar-wrap"><div class="boot-bar"></div></div>
+    <div class="boot-text" id="boot-text">INITIALIZING ROADMAP SYSTEM...</div>
+  </div>
+</div>
+
+<!-- SETUP MODAL -->
+<div id="setup-modal" class="modal-overlay hidden">
+  <div class="modal-box">
+    <div class="modal-label">// SYSTEM INITIALIZATION</div>
+    <h2>When did you start?</h2>
+    <p>Enter your Day 0 — the day you committed to this roadmap. Everything tracks from here.</p>
+    <input type="date" id="start-date-input" />
+    <button class="btn-primary" id="set-start-btn">INITIALIZE TRACKER</button>
+    <p class="modal-note">Stored locally on your device. Nothing sent anywhere.</p>
+  </div>
+</div>
+
+<!-- RESET CONFIRM MODAL -->
+<div id="reset-modal" class="modal-overlay hidden">
+  <div class="modal-box">
+    <div class="modal-label">// WARNING</div>
+    <h2>Reset ALL Progress?</h2>
+    <p>This will delete your start date and ALL checked tasks. This cannot be undone.</p>
+    <div class="modal-buttons">
+      <button class="btn-danger" id="confirm-reset-btn">YES, RESET EVERYTHING</button>
+      <button class="btn-secondary" id="cancel-reset-btn">CANCEL</button>
     </div>
   </div>
+</div>
 
-  <!-- SETUP MODAL -->
-  <div id="setup-modal" class="modal-overlay hidden">
-    <div class="modal-box">
-      <div class="modal-label">// SYSTEM INITIALIZATION</div>
-      <h2>When did you start?</h2>
-      <p>Enter your Day 0 — the day you committed to this roadmap. Everything tracks from here.</p>
-      <input type="date" id="start-date-input" />
-      <button class="btn-primary" id="set-start-btn">INITIALIZE TRACKER</button>
-      <p class="modal-note">This is stored locally on your device. Nothing is sent anywhere.</p>
-    </div>
+<!-- CHECKPOINT MODAL -->
+<div id="checkpoint-modal" class="modal-overlay hidden">
+  <div class="modal-box checkpoint-box">
+    <div class="modal-label" id="cp-label">// CHECKPOINT</div>
+    <h2 id="cp-title"></h2>
+    <div id="cp-questions"></div>
+    <button class="btn-primary" id="cp-close-btn">ACKNOWLEDGED</button>
   </div>
+</div>
 
-  <!-- RESET CONFIRM MODAL -->
-  <div id="reset-modal" class="modal-overlay hidden">
-    <div class="modal-box">
-      <div class="modal-label">// WARNING</div>
-      <h2>Reset ALL Progress?</h2>
-      <p>This will delete your start date and ALL checked tasks. This cannot be undone.</p>
-      <div class="modal-buttons">
-        <button class="btn-danger" id="confirm-reset-btn">YES, RESET EVERYTHING</button>
-        <button class="btn-secondary" id="cancel-reset-btn">CANCEL</button>
+<!-- TOP NAV -->
+<nav id="top-nav">
+  <div class="nav-brand">GREESH<span>SEC</span></div>
+  <div class="nav-center" id="day-display">
+    <span class="nav-label">CURRENT DAY</span>
+    <span class="nav-day" id="current-day-num">—</span>
+    <span class="nav-label">/ 900</span>
+  </div>
+  <div class="nav-actions">
+    <button class="btn-ghost" id="reset-btn">RESET</button>
+    <button class="btn-ghost" id="change-date-btn">CHANGE DATE</button>
+  </div>
+</nav>
+
+<!-- MAIN LAYOUT -->
+<div id="main-layout">
+
+  <!-- SIDEBAR -->
+  <aside id="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">OVERALL PROGRESS</div>
+      <div class="big-percent" id="overall-percent">0%</div>
+      <div class="progress-ring-wrap">
+        <svg class="progress-ring" viewBox="0 0 120 120">
+          <circle class="ring-bg" cx="60" cy="60" r="50"/>
+          <circle class="ring-fill" id="ring-fill" cx="60" cy="60" r="50"
+            stroke-dasharray="314.159" stroke-dashoffset="314.159"/>
+        </svg>
+        <div class="ring-inner">
+          <div class="ring-tasks" id="ring-tasks">0/0</div>
+          <div class="ring-label">TASKS</div>
+        </div>
       </div>
     </div>
-  </div>
-
-  <!-- CHECKPOINT MODAL -->
-  <div id="checkpoint-modal" class="modal-overlay hidden">
-    <div class="modal-box checkpoint-box">
-      <div class="modal-label" id="cp-label">// CHECKPOINT</div>
-      <h2 id="cp-title"></h2>
-      <div id="cp-questions"></div>
-      <button class="btn-primary" id="cp-close-btn">ACKNOWLEDGED</button>
+    <div class="sidebar-section">
+      <div class="sidebar-label">TIME TRACKER</div>
+      <div class="time-stat"><span class="ts-val" id="days-elapsed">0</span><span class="ts-key">DAYS IN</span></div>
+      <div class="time-stat"><span class="ts-val" id="days-left">900</span><span class="ts-key">DAYS LEFT</span></div>
+      <div class="time-stat"><span class="ts-val" id="eta-date">—</span><span class="ts-key">ETA</span></div>
     </div>
-  </div>
-
-  <!-- TOP NAV -->
-  <nav id="top-nav">
-    <div class="nav-brand">GREESH<span>SEC</span></div>
-    <div class="nav-center" id="day-display">
-      <span class="nav-label">CURRENT DAY</span>
-      <span class="nav-day" id="current-day-num">—</span>
-      <span class="nav-label">/ 900</span>
+    <div class="sidebar-section">
+      <div class="sidebar-label">PHASES</div>
+      <div id="phase-nav"></div>
     </div>
-    <div class="nav-actions">
-      <button class="btn-ghost" id="reset-btn">RESET</button>
-      <button class="btn-ghost" id="change-date-btn">CHANGE DATE</button>
+    <div class="sidebar-section">
+      <div class="sidebar-label">CERTIFICATIONS</div>
+      <div id="cert-sidebar"></div>
     </div>
-  </nav>
+    <div class="sidebar-section">
+      <div class="sidebar-label">DAILY 3HRS LOG</div>
+      <div class="streak-display">
+        <span class="streak-num" id="streak-num">0</span>
+        <span class="streak-label">DAY STREAK</span>
+      </div>
+      <button class="btn-log" id="log-today-btn">LOG TODAY ✓</button>
+      <div class="streak-grid" id="streak-grid"></div>
+    </div>
+  </aside>
 
-  <!-- MAIN LAYOUT -->
-  <div id="main-layout">
-
-    <!-- SIDEBAR -->
-    <aside id="sidebar">
-      <div class="sidebar-section">
-        <div class="sidebar-label">OVERALL PROGRESS</div>
-        <div class="big-percent" id="overall-percent">0%</div>
-        <div class="progress-ring-wrap">
-          <svg class="progress-ring" viewBox="0 0 120 120">
-            <circle class="ring-bg" cx="60" cy="60" r="50"/>
-            <circle class="ring-fill" id="ring-fill" cx="60" cy="60" r="50"
-              stroke-dasharray="314.159" stroke-dashoffset="314.159"/>
-          </svg>
-          <div class="ring-inner">
-            <div class="ring-tasks" id="ring-tasks">0/0</div>
-            <div class="ring-label">TASKS</div>
+  <!-- CONTENT -->
+  <main id="content">
+    <!-- DASHBOARD TAB -->
+    <div id="tab-dashboard" class="tab-content active">
+      <div class="page-header">
+        <div class="page-title-block">
+          <div class="page-eyebrow">// MISSION CONTROL</div>
+          <h1>Purple Team Roadmap</h1>
+          <p class="page-subtitle">Fresher → Top 1% | 900 Days | No Sugar Coating</p>
+        </div>
+        <div class="ground-truth-box">
+          <div class="gt-label">GROUND TRUTH</div>
+          <div class="gt-items">
+            <div class="gt-item">AI replaces tool monkeys. Not system thinkers.</div>
+            <div class="gt-item">Your degree means nothing. GitHub and certs do.</div>
+            <div class="gt-item">90% quit by Day 60. You are in the 10%.</div>
+            <div class="gt-item">Purple Team = less than 5% of security professionals.</div>
+            <div class="gt-item">3 hours minimum. Every single day.</div>
           </div>
         </div>
       </div>
-
-      <div class="sidebar-section">
-        <div class="sidebar-label">TIME TRACKER</div>
-        <div class="time-stat">
-          <span class="ts-val" id="days-elapsed">0</span>
-          <span class="ts-key">DAYS IN</span>
-        </div>
-        <div class="time-stat">
-          <span class="ts-val" id="days-left">900</span>
-          <span class="ts-key">DAYS LEFT</span>
-        </div>
-        <div class="time-stat">
-          <span class="ts-val" id="eta-date">—</span>
-          <span class="ts-key">ETA</span>
-        </div>
+      <div class="section-label">// CURRENT PHASE</div>
+      <div id="current-phase-card"></div>
+      <div class="section-label">// UPCOMING CHECKPOINTS</div>
+      <div id="checkpoint-cards"></div>
+      <div class="section-label">// CERTIFICATION TIMELINE</div>
+      <div id="cert-timeline"></div>
+      <div class="section-label">// WEEKLY SCHEDULE</div>
+      <div class="week-schedule">
+        <div class="day-card"><div class="day-name">MON</div><div class="day-task">Learn new concept — deep reading, no shortcuts</div></div>
+        <div class="day-card"><div class="day-name">TUE</div><div class="day-task">Hands-on lab — implement what you read</div></div>
+        <div class="day-card"><div class="day-name">WED</div><div class="day-task">CTF challenge or HackTheBox machine</div></div>
+        <div class="day-card"><div class="day-name">THU</div><div class="day-task">Write and document — blog, GitHub README, report</div></div>
+        <div class="day-card"><div class="day-name">FRI</div><div class="day-task">Review week, fix what broke, catch up</div></div>
+        <div class="day-card"><div class="day-name">SAT</div><div class="day-task">Longer project work — SOC lab, cloud lab, scripts</div></div>
+        <div class="day-card"><div class="day-name">SUN</div><div class="day-task">Community — Discord, LinkedIn post, read writeups</div></div>
       </div>
-
-      <div class="sidebar-section">
-        <div class="sidebar-label">PHASES</div>
-        <div id="phase-nav"></div>
-      </div>
-
-      <div class="sidebar-section">
-        <div class="sidebar-label">CERTIFICATIONS</div>
-        <div id="cert-sidebar"></div>
-      </div>
-
-      <div class="sidebar-section">
-        <div class="sidebar-label">DAILY 3HRS LOG</div>
-        <div class="streak-display">
-          <span class="streak-num" id="streak-num">0</span>
-          <span class="streak-label">DAY STREAK</span>
-        </div>
-        <button class="btn-log" id="log-today-btn">LOG TODAY ✓</button>
-        <div class="streak-grid" id="streak-grid"></div>
-      </div>
-    </aside>
-
-    <!-- CONTENT -->
-    <main id="content">
-
-      <!-- DASHBOARD TAB -->
-      <div id="tab-dashboard" class="tab-content active">
-        <div class="page-header">
-          <div class="page-title-block">
-            <div class="page-eyebrow">// MISSION CONTROL</div>
-            <h1>Purple Team Roadmap</h1>
-            <p class="page-subtitle">Fresher → Top 1% | 900 Days | No Sugar Coating</p>
-          </div>
-          <div class="ground-truth-box">
-            <div class="gt-label">GROUND TRUTH</div>
-            <div class="gt-items">
-              <div class="gt-item">AI replaces tool monkeys. Not system thinkers.</div>
-              <div class="gt-item">Your degree means nothing. GitHub and certs do.</div>
-              <div class="gt-item">90% quit by Day 60. You are in the 10%.</div>
-              <div class="gt-item">Purple Team = less than 5% of security professionals.</div>
-              <div class="gt-item">3 hours minimum. Every single day.</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="section-label">// CURRENT PHASE</div>
-        <div id="current-phase-card"></div>
-
-        <div class="section-label">// UPCOMING CHECKPOINTS</div>
-        <div id="checkpoint-cards"></div>
-
-        <div class="section-label">// CERTIFICATION TIMELINE</div>
-        <div id="cert-timeline"></div>
-
-        <div class="section-label">// WEEKLY SCHEDULE</div>
-        <div class="week-schedule">
-          <div class="day-card"><div class="day-name">MON</div><div class="day-task">Learn new concept — deep reading, no shortcuts</div></div>
-          <div class="day-card"><div class="day-name">TUE</div><div class="day-task">Hands-on lab — implement what you read</div></div>
-          <div class="day-card"><div class="day-name">WED</div><div class="day-task">CTF challenge or HackTheBox machine</div></div>
-          <div class="day-card"><div class="day-name">THU</div><div class="day-task">Write and document — blog, GitHub README, report</div></div>
-          <div class="day-card"><div class="day-name">FRI</div><div class="day-task">Review week, fix what broke, catch up</div></div>
-          <div class="day-card"><div class="day-name">SAT</div><div class="day-task">Longer project work — SOC lab, cloud lab, scripts</div></div>
-          <div class="day-card"><div class="day-name">SUN</div><div class="day-task">Community — Discord, LinkedIn post, read writeups</div></div>
-        </div>
-
-        <div class="section-label">// GITHUB PORTFOLIO STRUCTURE</div>
-        <div class="code-block">
-          <pre>github.com/YourName/
+      <div class="section-label">// GITHUB PORTFOLIO STRUCTURE</div>
+      <div class="code-block"><pre>github.com/YourName/
 │
 ├── security-scripts/
 │   ├── log-parser.py          ← Phase 1
@@ -208,55 +941,1266 @@
 │
 └── research/
     ├── ai-security-assessment/
-    └── datacenter-security-analysis/</pre>
+    └── datacenter-security-analysis/</pre></div>
+    </div>
+
+    <!-- PHASES TAB -->
+    <div id="tab-phases" class="tab-content">
+      <div class="page-header">
+        <div class="page-eyebrow">// ALL PHASES</div>
+        <h1>Track Your Tasks</h1>
+      </div>
+      <div id="phases-container"></div>
+    </div>
+
+    <!-- CHECKPOINTS TAB -->
+    <div id="tab-checkpoints" class="tab-content">
+      <div class="page-header">
+        <div class="page-eyebrow">// BRUTAL CHECKPOINTS</div>
+        <h1>The Timestamps Don't Lie</h1>
+        <p class="page-subtitle">These are pass/fail. Not suggestions.</p>
+      </div>
+      <div id="checkpoints-container"></div>
+    </div>
+
+    <!-- NOTES TAB -->
+    <div id="tab-notes" class="tab-content">
+      <div class="page-header">
+        <div class="page-eyebrow">// DAILY LOG</div>
+        <h1>What Did You Do Today?</h1>
+        <p class="page-subtitle">One paragraph per day. Timestamps prove consistency.</p>
+      </div>
+      <div class="notes-toolbar">
+        <input type="text" id="notes-search" placeholder="Search notes..." />
+        <button class="btn-primary" id="add-note-btn">+ ADD TODAY'S LOG</button>
+      </div>
+      <div id="notes-container"></div>
+    </div>
+  </main>
+</div>
+
+<!-- BOTTOM NAV -->
+<nav id="bottom-nav">
+  <button class="tab-btn active" data-tab="dashboard">📊 DASHBOARD</button>
+  <button class="tab-btn" data-tab="phases">📋 PHASES</button>
+  <button class="tab-btn" data-tab="checkpoints">⚠️ CHECKPOINTS</button>
+  <button class="tab-btn" data-tab="notes">📝 DAILY LOG</button>
+</nav>
+
+<script>
+const ROADMAP = {
+  meta: {
+    title: "Purple Team Cybersecurity Roadmap",
+    subtitle: "Fresher → Top 1% | 900 Days",
+    totalDays: 900,
+    startKey: "roadmap_start_date"
+  },
+  certifications: [
+    { id: "cert1", day: 160, name: "CompTIA Network+ or Security+", cost: "$370", priority: "CRITICAL" },
+    { id: "cert2", day: 290, name: "eJPT", cost: "$200", priority: "CRITICAL" },
+    { id: "cert3", day: 440, name: "CompTIA CySA+", cost: "$370", priority: "HIGH" },
+    { id: "cert4", day: 600, name: "GCP Associate Cloud Engineer", cost: "$200", priority: "HIGH" },
+    { id: "cert5", day: 700, name: "GCP Professional Cloud Security Engineer", cost: "$200", priority: "HIGH" },
+    { id: "cert6", day: 800, name: "OSCP (start studying Day 700)", cost: "$1499", priority: "CAREER-DEFINING" }
+  ],
+  checkpoints: [
+    {
+      day: 90,
+      title: "Quit Check",
+      questions: [
+        "Can you explain subnetting without notes?",
+        "Can you explain TCP handshake confidently?",
+        "Can you navigate Linux permissions without Google?"
+      ]
+    },
+    {
+      day: 180,
+      title: "Cert Check",
+      questions: [
+        "Do you have at least one certification?",
+        "Have you booked your next exam?"
+      ]
+    },
+    {
+      day: 300,
+      title: "Portfolio Check",
+      questions: [
+        "Is your GitHub active with real projects?",
+        "Do you have 5+ CTF writeups published?",
+        "Are all 4 Python scripts complete and documented?"
+      ]
+    },
+    {
+      day: 500,
+      title: "Relevance Check",
+      questions: [
+        "Are people engaging with your LinkedIn posts?",
+        "Has anyone in the security community responded to your writeups?",
+        "Have you submitted at least one bug bounty report?"
+      ]
+    },
+    {
+      day: 700,
+      title: "Reality Check",
+      questions: [
+        "Can you explain a Purple Team exercise in an interview?",
+        "Can you walk through your SOC lab architecture?",
+        "Can you describe a cloud attack you executed AND detected?",
+        "Can you explain every line of your Python scripts?"
+      ]
+    },
+    {
+      day: 900,
+      title: "Final Check",
+      questions: [
+        "Do you have 5–6 certifications including OSCP?",
+        "Do you have 100+ CTF challenges documented?",
+        "Is your blog live with 50+ technical posts?",
+        "Do you have at least one paid bug bounty submission?"
+      ]
+    }
+  ],
+  phases: [
+    {
+      id: "phase0",
+      number: 0,
+      title: "Mindset Installation",
+      days: "Day 0–14",
+      dayStart: 0,
+      dayEnd: 14,
+      color: "#00ff9d",
+      icon: "🧠",
+      goal: "Build the system that keeps you going when motivation dies. Every roadmap skips this phase. Everyone who skips it quits.",
+      warning: "If you skip this phase: You will quit by Day 90. Guaranteed.",
+      blocks: [
+        {
+          id: "p0b1",
+          title: "Setup Public Presence",
+          tasks: [
+            { id: "t001", text: "Create GitHub account and set up profile README", type: "setup" },
+            { id: "t002", text: "Push your first repository (even if it's just a hello world)", type: "setup" },
+            { id: "t003", text: "Set up blog (GitHub Pages or Hashnode — free)", type: "setup" },
+            { id: "t004", text: "Create TryHackMe account and join learning paths", type: "setup" },
+            { id: "t005", text: "Create HackTheBox account", type: "setup" },
+            { id: "t006", text: "Create LinkedIn and write Day 1 post about your journey", type: "setup" },
+            { id: "t007", text: "Join HackerOne and Bugcrowd (for future use)", type: "setup" }
+          ]
+        },
+        {
+          id: "p0b2",
+          title: "Communities",
+          tasks: [
+            { id: "t008", text: "Join TryHackMe official Discord", type: "community" },
+            { id: "t009", text: "Join HackTheBox official Discord", type: "community" },
+            { id: "t010", text: "Subscribe: r/netsec, r/AskNetsec, r/cybersecurity on Reddit", type: "community" },
+            { id: "t011", text: "Follow 10 security professionals on LinkedIn", type: "community" }
+          ]
+        },
+        {
+          id: "p0b3",
+          title: "Tracking System",
+          tasks: [
+            { id: "t012", text: "Create a daily log (spreadsheet or Notion) tracking: hours, learned, broke, fixed", type: "setup" },
+            { id: "t013", text: "Set a recurring calendar reminder: 3 hours study daily", type: "setup" },
+            { id: "t014", text: "Read the Ground Truth section of this roadmap. Screenshot it. Put it on your wall.", type: "mindset" }
+          ]
+        }
+      ]
+    },
+    {
+      id: "phase1",
+      number: 1,
+      title: "System Foundation",
+      days: "Day 15–150",
+      dayStart: 15,
+      dayEnd: 150,
+      color: "#00d4ff",
+      icon: "⚙️",
+      goal: "Understand computers at a level 95% of IT people don't. AI can use tools. AI cannot think through a novel system failure. You need to be able to do that.",
+      warning: "This is the hardest phase mentally because nothing feels exciting. Push through. This is where most people quit and why you won't.",
+      blocks: [
+        {
+          id: "p1b1",
+          title: "Block 1A — Networking (Day 15–60)",
+          tasks: [
+            { id: "t101", text: "Learn binary and hexadecimal — read raw packet data", type: "learn" },
+            { id: "t102", text: "Study OSI model — trace where each layer fails (not memorization)", type: "learn" },
+            { id: "t103", text: "Master IP addressing and subnetting — calculate by hand until automatic", type: "learn" },
+            { id: "t104", text: "Capture TCP AND UDP traffic in Wireshark — see the visual difference", type: "lab" },
+            { id: "t105", text: "Trace full DNS recursive resolution in Wireshark", type: "lab" },
+            { id: "t106", text: "Read actual HTTP vs HTTPS headers in Wireshark", type: "lab" },
+            { id: "t107", text: "Understand ARP and why ARP spoofing works", type: "learn" },
+            { id: "t108", text: "Study routing basics — how packets travel across networks", type: "learn" },
+            { id: "t109", text: "Complete Professor Messer Network+ series (YouTube)", type: "resource" },
+            { id: "t110", text: "Daily subnetting practice at subnettingpractice.com", type: "practice" },
+            { id: "t111", text: "VirtualBox installed + Kali VM + Ubuntu Server VM running", type: "lab" },
+            { id: "t112", text: "Both VMs connected on internal network", type: "lab" },
+            { id: "t113", text: "[MILESTONE] Explain TCP 3-way handshake without notes", type: "milestone" },
+            { id: "t114", text: "[MILESTONE] Subnet /24 into 8 subnets in under 2 minutes", type: "milestone" },
+            { id: "t115", text: "[MILESTONE] Capture DNS query and explain every field", type: "milestone" },
+            { id: "t116", text: "[MILESTONE] Explain why HTTPS prevents what you see in HTTP captures", type: "milestone" }
+          ]
+        },
+        {
+          id: "p1b2",
+          title: "Block 1B — Linux (Day 61–110)",
+          tasks: [
+            { id: "t117", text: "Learn file system hierarchy — know where everything lives and why", type: "learn" },
+            { id: "t118", text: "Master permissions — chmod, chown, SUID bits, privilege escalation relevance", type: "learn" },
+            { id: "t119", text: "Users and groups — how privilege separation works", type: "learn" },
+            { id: "t120", text: "Process management — ps, top, kill (critical for incident response)", type: "learn" },
+            { id: "t121", text: "Networking commands — netstat, ss, ip, ping, traceroute", type: "learn" },
+            { id: "t122", text: "Log files — /var/log/, journalctl, understand what each log tells you", type: "learn" },
+            { id: "t123", text: "Text processing — grep, awk, sed, cut (your automation foundation)", type: "learn" },
+            { id: "t124", text: "Bash scripting — loops, conditions, functions", type: "learn" },
+            { id: "t125", text: "Cron jobs — attackers use these for persistence. Know them.", type: "learn" },
+            { id: "t126", text: "SSH — key-based auth, config files, tunneling basics", type: "learn" },
+            { id: "t127", text: "Complete OverTheWire: Bandit — ALL 34 levels (mandatory)", type: "platform" },
+            { id: "t128", text: "Complete TryHackMe Linux Fundamentals Parts 1, 2, and 3", type: "platform" },
+            { id: "t129", text: "SSH key auth configured between your two VMs", type: "lab" },
+            { id: "t130", text: "[MILESTONE] Navigate entire system and read logs without Google", type: "milestone" },
+            { id: "t131", text: "[MILESTONE] Write bash script: parse auth.log, output failed logins with IP + timestamp", type: "milestone" },
+            { id: "t132", text: "[MILESTONE] Explain SUID and why it is a privilege escalation vector", type: "milestone" }
+          ]
+        },
+        {
+          id: "p1b3",
+          title: "Block 1C — Python for Security (Day 111–150)",
+          tasks: [
+            { id: "t133", text: "File I/O and string manipulation", type: "learn" },
+            { id: "t134", text: "Regular expressions — critical for log parsing", type: "learn" },
+            { id: "t135", text: "subprocess module — running system commands from Python", type: "learn" },
+            { id: "t136", text: "socket module — basic network programming (foundation for scanner)", type: "learn" },
+            { id: "t137", text: "requests library — HTTP automation", type: "learn" },
+            { id: "t138", text: "argparse — making proper CLI tools", type: "learn" },
+            { id: "t139", text: "Working with JSON and CSV data", type: "learn" },
+            { id: "t140", text: "[SCRIPT 1] Log parser: reads auth.log, flags IPs over threshold, push to GitHub", type: "project" },
+            { id: "t141", text: "[SCRIPT 2] Port scanner from scratch using sockets — understand what Nmap actually does", type: "project" },
+            { id: "t142", text: "[SCRIPT 3] File hasher: MD5/SHA256 of every file in a directory (integrity checker)", type: "project" },
+            { id: "t143", text: "[SCRIPT 4] HTTP header grabber: fetches and prints security headers from URL list", type: "project" },
+            { id: "t144", text: "All 4 scripts documented with README and pushed to GitHub", type: "milestone" },
+            { id: "t145", text: "[MILESTONE] Write a basic security script from scratch without copying Stack Overflow", type: "milestone" }
+          ]
+        }
+      ]
+    },
+    {
+      id: "phase2",
+      number: 2,
+      title: "Offensive Security",
+      days: "Day 151–300",
+      dayStart: 151,
+      dayEnd: 300,
+      color: "#ff4444",
+      icon: "⚔️",
+      goal: "Understand exactly how systems are broken so you can defend them. You are not learning to hack people. You are learning attack mechanics so your defenses in Phase 3 are built on reality.",
+      warning: "Skipping offensive knowledge and going straight to defense means you are guessing. You will build detections for attacks you have never seen. That is useless.",
+      blocks: [
+        {
+          id: "p2b1",
+          title: "Block 2A — Recon and Scanning (Day 151–190)",
+          tasks: [
+            { id: "t201", text: "Nmap — every flag at packet level. SYN vs connect vs UDP scan in Wireshark simultaneously", type: "learn" },
+            { id: "t202", text: "theHarvester — passive OSINT", type: "learn" },
+            { id: "t203", text: "Shodan — understanding internet-exposed attack surface", type: "learn" },
+            { id: "t204", text: "Whois, dig, nslookup — DNS enumeration", type: "learn" },
+            { id: "t205", text: "TryHackMe: Intro to Networking room", type: "platform" },
+            { id: "t206", text: "TryHackMe: Nmap room", type: "platform" },
+            { id: "t207", text: "TryHackMe: Network Services 1 and 2", type: "platform" },
+            { id: "t208", text: "TryHackMe: OWASP Top 10 room", type: "platform" },
+            { id: "t209", text: "Scan your lab network with Nmap + capture in Wireshark simultaneously", type: "lab" },
+            { id: "t210", text: "Write professional report: open ports, services, risks for each", type: "project" }
+          ]
+        },
+        {
+          id: "p2b2",
+          title: "Block 2B — Exploitation Basics (Day 191–250)",
+          tasks: [
+            { id: "t211", text: "Metasploit — understand what exploits DO, not just firing them", type: "learn" },
+            { id: "t212", text: "OWASP Top 10 web vulnerabilities: SQLi, XSS, IDOR, broken auth", type: "learn" },
+            { id: "t213", text: "Password attacks — hashcat, john, rainbow tables, why salting matters", type: "learn" },
+            { id: "t214", text: "File inclusion vulnerabilities — LFI and RFI", type: "learn" },
+            { id: "t215", text: "Basic buffer overflow concept — understand the mechanism", type: "learn" },
+            { id: "t216", text: "Deploy DVWA (Damn Vulnerable Web App) in your lab", type: "lab" },
+            { id: "t217", text: "Deploy Metasploitable 2 in your lab as target machine", type: "lab" },
+            { id: "t218", text: "Complete TryHackMe Jr Penetration Tester path (entire path)", type: "platform" },
+            { id: "t219", text: "Complete PortSwigger Web Security Academy — SQLi module", type: "platform" },
+            { id: "t220", text: "Complete PortSwigger Web Security Academy — XSS module", type: "platform" },
+            { id: "t221", text: "Complete PortSwigger Web Security Academy — Auth module", type: "platform" },
+            { id: "t222", text: "HTB: Complete 5 retired Easy machines with full writeups published on blog", type: "platform" }
+          ]
+        },
+        {
+          id: "p2b3",
+          title: "Block 2C — CTF Integration (Day 151–300, ongoing)",
+          tasks: [
+            { id: "t223", text: "Complete PicoCTF beginner challenges (start here)", type: "ctf" },
+            { id: "t224", text: "Minimum 1 CTF challenge per week — document every single one", type: "ctf" },
+            { id: "t225", text: "TryHackMe CTF rooms", type: "ctf" },
+            { id: "t226", text: "HackTheBox Starting Point — guided machines", type: "ctf" },
+            { id: "t227", text: "HackTheBox Easy machines — minimum 5 completed", type: "ctf" },
+            { id: "t228", text: "Join CTFtime.org team event (around Day 250)", type: "ctf" },
+            { id: "t229", text: "All writeups published on blog with timestamps", type: "project" }
+          ]
+        },
+        {
+          id: "p2b4",
+          title: "Block 2D — Bug Bounty Introduction (Day 260–300)",
+          tasks: [
+            { id: "t230", text: "Read 50 disclosed bug bounty reports on HackerOne (free)", type: "learn" },
+            { id: "t231", text: "Pick one program with wide scope on Bugcrowd", type: "practice" },
+            { id: "t232", text: "2 weeks of recon only — subdomains, tech stack identification", type: "practice" },
+            { id: "t233", text: "Submit first report (even low severity counts as portfolio proof)", type: "milestone" },
+            { id: "t234", text: "Complete PortSwigger Web Security Academy SSRF module", type: "platform" },
+            { id: "t235", text: "Complete PortSwigger Web Security Academy XXE module", type: "platform" }
+          ]
+        },
+        {
+          id: "p2b5",
+          title: "Threat Intel Upgrade (Day 280–300)",
+          tasks: [
+            { id: "t236", text: "[SCRIPT 5] VirusTotal API script: takes file hash, returns threat intel report", type: "project" },
+            { id: "t237", text: "[SCRIPT 6] AlienVault OTX script: pull IOCs for a given domain or IP", type: "project" },
+            { id: "t238", text: "Understand what the API returns — don't just display it, analyse it", type: "learn" },
+            { id: "t239", text: "Document: where does this data come from? What are its limitations?", type: "project" }
+          ]
+        }
+      ]
+    },
+    {
+      id: "phase3",
+      number: 3,
+      title: "Defensive Security + Log Thinking",
+      days: "Day 301–450",
+      dayStart: 301,
+      dayEnd: 450,
+      color: "#00ff9d",
+      icon: "🛡️",
+      goal: "Think like a defender with attacker knowledge. This combination IS Purple Team. Most red teamers can't read logs. Most blue teamers don't understand what attacks look like before they hit logs. You will understand both.",
+      warning: "This phase is where most people get boring and quit. Push through. The SOC lab you build here is worth more than any certification on your resume.",
+      blocks: [
+        {
+          id: "p3b1",
+          title: "Block 3A — Log Analysis (Day 301–350)",
+          tasks: [
+            { id: "t301", text: "Linux auth logs — /var/log/auth.log deep analysis", type: "learn" },
+            { id: "t302", text: "Windows Event Logs — 4624, 4625, 4688, 4720 (know these by number)", type: "learn" },
+            { id: "t303", text: "Web server logs — Apache/Nginx access and error logs", type: "learn" },
+            { id: "t304", text: "Firewall logs — what gets logged, what doesn't", type: "learn" },
+            { id: "t305", text: "DNS query logs — detecting DNS tunneling and exfil", type: "learn" },
+            { id: "t306", text: "Deploy ELK Stack (Elastic + Logstash + Kibana) in your lab", type: "lab" },
+            { id: "t307", text: "Deploy Wazuh manager on Ubuntu VM", type: "lab" },
+            { id: "t308", text: "Deploy Splunk Free and learn SPL query language basics", type: "lab" },
+            { id: "t309", text: "Purple Team Exercise 1: Run brute force → find EXACT log evidence → document", type: "lab" },
+            { id: "t310", text: "Purple Team Exercise 2: Run Nmap scan → find in IDS logs → document", type: "lab" },
+            { id: "t311", text: "Purple Team Exercise 3: Exploit DVWA → find web logs → document", type: "lab" },
+            { id: "t312", text: "Tag every attack-detection pair with MITRE ATT&CK technique ID", type: "project" },
+            { id: "t313", text: "Push all attack-detection pairs to GitHub", type: "project" }
+          ]
+        },
+        {
+          id: "p3b2",
+          title: "Block 3B — SOC Lab Build (Day 351–400)",
+          tasks: [
+            { id: "t314", text: "Architecture: Wazuh manager on Ubuntu + Kali attacker + Windows victim VM", type: "lab" },
+            { id: "t315", text: "All VMs feeding logs into Wazuh", type: "lab" },
+            { id: "t316", text: "[SCENARIO 1] Brute force SSH → detect → alert → write full report", type: "project" },
+            { id: "t317", text: "[SCENARIO 2] Nmap scan → IDS rule → log documentation → report", type: "project" },
+            { id: "t318", text: "[SCENARIO 3] Reverse shell → detect unusual outbound → report", type: "project" },
+            { id: "t319", text: "[SCENARIO 4] Privilege escalation via SUID → file integrity monitoring → report", type: "project" },
+            { id: "t320", text: "[SCENARIO 5] Cron job persistence → cron log monitoring → report", type: "project" },
+            { id: "t321", text: "Each report: Attack / Detection / Response / Remediation sections", type: "project" },
+            { id: "t322", text: "Architecture diagram created and pushed to GitHub", type: "project" },
+            { id: "t323", text: "All 5 reports published — this is your flagship portfolio piece", type: "milestone" }
+          ]
+        },
+        {
+          id: "p3b3",
+          title: "Block 3C — Incident Response (Day 401–450)",
+          tasks: [
+            { id: "t324", text: "IR lifecycle: Preparation, Identification, Containment, Eradication, Recovery, Lessons Learned", type: "learn" },
+            { id: "t325", text: "Evidence collection and chain of custody concepts", type: "learn" },
+            { id: "t326", text: "Memory forensics basics — Volatility framework", type: "learn" },
+            { id: "t327", text: "Disk forensics basics — Autopsy", type: "learn" },
+            { id: "t328", text: "Network forensics — Wireshark + Zeek", type: "learn" },
+            { id: "t329", text: "TryHackMe SOC Level 1 path — complete entire path", type: "platform" },
+            { id: "t330", text: "Blue Team Labs Online — complete 5 log analysis challenges", type: "platform" }
+          ]
+        }
+      ]
+    },
+    {
+      id: "phase4",
+      number: 4,
+      title: "Cloud Security",
+      days: "Day 451–600",
+      dayStart: 451,
+      dayEnd: 600,
+      color: "#7c3aed",
+      icon: "☁️",
+      goal: "Cloud is where every company lives. Cloud security is where the jobs are. On-premise is dying. Every major breach in the last 3 years involved cloud misconfiguration.",
+      warning: "Skipping cloud means you are preparing for a world that no longer exists. IAM misconfiguration is the #1 cause of cloud breaches. Not exotic exploits. Misconfiguration.",
+      blocks: [
+        {
+          id: "p4b1",
+          title: "Block 4A — Cloud Foundations (Day 451–500)",
+          tasks: [
+            { id: "t401", text: "IAM — most important cloud concept. Overpermissioned service accounts cause more breaches than any exploit", type: "learn" },
+            { id: "t402", text: "VPCs and subnets — same networking concepts, different cloud implementation", type: "learn" },
+            { id: "t403", text: "GCS bucket security — public vs private, misconfiguration patterns", type: "learn" },
+            { id: "t404", text: "Compute security — VM hardening, firewall rules, security groups", type: "learn" },
+            { id: "t405", text: "Cloud Audit Logs — what gets logged, critically what does NOT", type: "learn" },
+            { id: "t406", text: "Secret management — never hardcode credentials. Ever.", type: "learn" },
+            { id: "t407", text: "Google Cloud Skills Boost free labs — complete 5 labs", type: "platform" },
+            { id: "t408", text: "Deploy CloudGoat by Rhino Security Labs — vulnerable by design", type: "lab" }
+          ]
+        },
+        {
+          id: "p4b2",
+          title: "Block 4B — Cloud Attack and Defense (Day 501–560)",
+          tasks: [
+            { id: "t409", text: "[CLOUD 1] GCS bucket misconfiguration: expose → find data → fix → document", type: "project" },
+            { id: "t410", text: "[CLOUD 2] IAM privilege escalation: overpermissioned role → exploit → audit log → fix", type: "project" },
+            { id: "t411", text: "[CLOUD 3] Metadata service abuse: SSRF → steal credentials → detect → fix", type: "project" },
+            { id: "t412", text: "[CLOUD 4] Exposed credentials in code: find → rotate → implement secret scanning", type: "project" },
+            { id: "t413", text: "All cloud attack-defense pairs tagged with MITRE ATT&CK Cloud matrix IDs", type: "project" },
+            { id: "t414", text: "Full documentation with screenshots and commands pushed to GitHub", type: "project" }
+          ]
+        },
+        {
+          id: "p4b3",
+          title: "Block 4C — Certification Prep (Day 561–600)",
+          tasks: [
+            { id: "t415", text: "GCP Associate Cloud Engineer — book exam, study, sit exam", type: "cert" },
+            { id: "t416", text: "Start studying GCP Professional Cloud Security Engineer (exam target Day 700)", type: "cert" },
+            { id: "t417", text: "Write a technical blog post: 3 cloud misconfigurations you found and fixed", type: "project" }
+          ]
+        }
+      ]
+    },
+    {
+      id: "phase5",
+      number: 5,
+      title: "Purple Team Synthesis",
+      days: "Day 601–720",
+      dayStart: 601,
+      dayEnd: 720,
+      color: "#ff6b35",
+      icon: "🟣",
+      goal: "Combine everything into the actual Purple Team skillset. Purple Team is NOT red + blue. It is the continuous loop between them. This phase did not exist in the original roadmap. It is the most important phase.",
+      warning: "Most people call themselves Purple Team after reading a blog post. You will have 600 days of evidence. The difference will be obvious in every interview.",
+      blocks: [
+        {
+          id: "p5b1",
+          title: "MITRE ATT&CK Framework Mastery",
+          tasks: [
+            { id: "t501", text: "Study MITRE ATT&CK framework — every technique has an ID, learn to navigate it", type: "learn" },
+            { id: "t502", text: "Retroactively tag all previous attack-detection pairs with correct MITRE IDs", type: "project" },
+            { id: "t503", text: "Understand ATT&CK Navigator — build your coverage map", type: "learn" },
+            { id: "t504", text: "Understand Sigma rules — the common format for detection rules", type: "learn" }
+          ]
+        },
+        {
+          id: "p5b2",
+          title: "Project 1: Purple Team Exercise Report",
+          tasks: [
+            { id: "t505", text: "Pick 10 MITRE ATT&CK techniques across different tactics", type: "project" },
+            { id: "t506", text: "For each: execute in lab, build detection, verify detection fires, document", type: "project" },
+            { id: "t507", text: "Format as professional Purple Team Exercise Report (PDF)", type: "project" },
+            { id: "t508", text: "Publish report on GitHub — this document alone will get you interviews", type: "project" }
+          ]
+        },
+        {
+          id: "p5b3",
+          title: "Project 2: Detection-as-Code",
+          tasks: [
+            { id: "t509", text: "Write all Wazuh/Splunk detection rules as code (Sigma format)", type: "project" },
+            { id: "t510", text: "Store in GitHub with version control and documentation", type: "project" },
+            { id: "t511", text: "[SCRIPT 7] SOAR automation: detection fires → auto-enrichment via VirusTotal API → alert", type: "project" },
+            { id: "t512", text: "Document: what does your SOAR script do that AI cannot do alone?", type: "project" }
+          ]
+        },
+        {
+          id: "p5b4",
+          title: "Project 3: Threat Intelligence Integration",
+          tasks: [
+            { id: "t513", text: "Pull AlienVault OTX free threat feed", type: "project" },
+            { id: "t514", text: "[SCRIPT 8] Python script: ingest IOCs, check against your lab logs, flag matches", type: "project" },
+            { id: "t515", text: "Document false positive rate and why threshold tuning matters", type: "project" },
+            { id: "t516", text: "Publish as standalone tool on GitHub with full README", type: "project" }
+          ]
+        }
+      ]
+    },
+    {
+      id: "phase6",
+      number: 6,
+      title: "Infrastructure and Edge",
+      days: "Day 721–780",
+      dayStart: 721,
+      dayEnd: 780,
+      color: "#ffd700",
+      icon: "🏗️",
+      goal: "Most cybersecurity people have never seen a data center. Most cannot explain how physical network hardware works. This knowledge makes you dangerous in interviews and valuable on teams.",
+      warning: "This is your differentiator. Everyone skips this. That is exactly why you will not.",
+      blocks: [
+        {
+          id: "p6b1",
+          title: "Infrastructure Knowledge",
+          tasks: [
+            { id: "t601", text: "Data center architecture: power distribution, cooling, redundancy", type: "learn" },
+            { id: "t602", text: "Physical network hardware: switches, routers, firewalls, load balancers", type: "learn" },
+            { id: "t603", text: "Network segmentation: DMZ, VLANs, zero trust architecture", type: "learn" },
+            { id: "t604", text: "SD-WAN basics", type: "learn" },
+            { id: "t605", text: "Hardware security: TPM, secure boot, firmware attacks (conceptual)", type: "learn" },
+            { id: "t606", text: "Watch CBT Nuggets data center fundamentals (YouTube)", type: "resource" },
+            { id: "t607", text: "Complete Cisco Networking Academy free course", type: "platform" },
+            { id: "t608", text: "Watch Google and Microsoft data center virtual tours", type: "resource" },
+            { id: "t609", text: "[DELIVERABLE] 2000-word technical post: how a data center works, security controls, failure points — PUBLISH", type: "project" }
+          ]
+        }
+      ]
+    },
+    {
+      id: "phase7",
+      number: 7,
+      title: "AI Era Adaptation",
+      days: "Day 781–870",
+      dayStart: 781,
+      dayEnd: 870,
+      color: "#ff00ff",
+      icon: "🤖",
+      goal: "Use AI as a force multiplier, not a crutch. Understand AI as an attack surface. AI will not replace you if you understand systems. AI WILL replace you if you only know how to use tools.",
+      warning: "AI can call the VirusTotal API in 10 seconds. If your only value is API integrations, you have zero job security. Your 780 days of system understanding is what AI cannot replicate.",
+      blocks: [
+        {
+          id: "p7b1",
+          title: "AI as Force Multiplier",
+          tasks: [
+            { id: "t701", text: "Use AI to summarize large log files — then verify every summary manually", type: "learn" },
+            { id: "t702", text: "Use AI to generate detection rule drafts — then validate and tune each one", type: "learn" },
+            { id: "t703", text: "Use AI for threat report summarization — process 10 reports, check accuracy", type: "learn" },
+            { id: "t704", text: "Document 5 specific cases where AI gave wrong security information", type: "project" }
+          ]
+        },
+        {
+          id: "p7b2",
+          title: "AI as Attack Surface",
+          tasks: [
+            { id: "t705", text: "Prompt injection attacks — study and test on local LLM", type: "learn" },
+            { id: "t706", text: "Training data poisoning — understand the concept and threat model", type: "learn" },
+            { id: "t707", text: "Model extraction attacks — conceptual understanding", type: "learn" },
+            { id: "t708", text: "AI-powered phishing — what attackers are already doing in 2025+", type: "learn" },
+            { id: "t709", text: "Defending AI systems: input validation, output filtering, rate limiting", type: "learn" },
+            { id: "t710", text: "Install Ollama — run a local LLM", type: "lab" },
+            { id: "t711", text: "[PROJECT] AI Security Assessment: attempt prompt injections, document what works and what doesn't", type: "project" },
+            { id: "t712", text: "Write and publish research post on AI security findings", type: "project" }
+          ]
+        }
+      ]
+    },
+    {
+      id: "phase8",
+      number: 8,
+      title: "Job Preparation",
+      days: "Day 871–900",
+      dayStart: 871,
+      dayEnd: 900,
+      color: "#00ff9d",
+      icon: "🎯",
+      goal: "Convert 900 days of work into employment. The timestamps on your GitHub don't lie. The cert PDFs either exist or they don't.",
+      warning: "Do not start applying without a polished GitHub, a live blog, and at least 3 certifications. Quantity of applications without quality of portfolio is wasted time.",
+      blocks: [
+        {
+          id: "p8b1",
+          title: "Resume and Applications",
+          tasks: [
+            { id: "t801", text: "Build one-page resume — every bullet starts with a number or result", type: "setup" },
+            { id: "t802", text: "ATS keyword audit — match job descriptions for target companies", type: "setup" },
+            { id: "t803", text: "Apply: Palo Alto Networks CAMP program", type: "apply" },
+            { id: "t804", text: "Apply: Google STEP / SWE internship security track", type: "apply" },
+            { id: "t805", text: "Apply: Razorpay, Zepto, Swiggy security teams (Indian startups, hire freshers)", type: "apply" },
+            { id: "t806", text: "Apply: DRDO, CERT-In (Indian government — good for fresher)", type: "apply" }
+          ]
+        },
+        {
+          id: "p8b2",
+          title: "Interview Preparation",
+          tasks: [
+            { id: "t807", text: "LeetCode: 50 easy problems (appears in security interviews)", type: "practice" },
+            { id: "t808", text: "System design: how would you design a secure authentication system?", type: "practice" },
+            { id: "t809", text: "Behavioral: STAR format for every project you built", type: "practice" },
+            { id: "t810", text: "Technical: whiteboard TCP handshake, SQL injection, IR process", type: "practice" },
+            { id: "t811", text: "Mock interview: record yourself explaining your Purple Team exercise report", type: "practice" }
+          ]
+        },
+        {
+          id: "p8b3",
+          title: "Final Portfolio Audit",
+          tasks: [
+            { id: "t812", text: "GitHub: active commits in last 30 days — non-negotiable", type: "milestone" },
+            { id: "t813", text: "Blog: 50+ published posts with timestamps", type: "milestone" },
+            { id: "t814", text: "GitHub structure matches the portfolio template from roadmap", type: "milestone" },
+            { id: "t815", text: "All 5 SOC lab scenarios documented and public", type: "milestone" },
+            { id: "t816", text: "Purple Team Exercise Report published", type: "milestone" },
+            { id: "t817", text: "At least one bug bounty submission on record", type: "milestone" }
+          ]
+        }
+      ]
+    }
+  ]
+};
+// ============================================================
+// GREESHSEC ROADMAP TRACKER — app.js
+// ============================================================
+
+const DB_KEY = 'greeshsec_tracker_v2';
+
+// ── State ──────────────────────────────────────────────────
+let state = {
+  startDate: null,
+  tasks: {},       // { taskId: true }
+  certs: {},       // { certId: true }
+  checkpointsPassed: {}, // { day: true }
+  notes: [],       // [{ id, date, dayNum, text }]
+  dailyLog: {},    // { 'YYYY-MM-DD': true }
+};
+
+// ── Persistence ─────────────────────────────────────────────
+function save() {
+  localStorage.setItem(DB_KEY, JSON.stringify(state));
+}
+function load() {
+  const raw = localStorage.getItem(DB_KEY);
+  if (raw) {
+    try {
+      const saved = JSON.parse(raw);
+      state = { ...state, ...saved };
+    } catch(e) {}
+  }
+}
+
+// ── Date helpers ─────────────────────────────────────────────
+function getDayNumber() {
+  if (!state.startDate) return 0;
+  const start = new Date(state.startDate);
+  const now = new Date();
+  start.setHours(0,0,0,0); now.setHours(0,0,0,0);
+  return Math.floor((now - start) / 86400000) + 1;
+}
+function formatDate(dateStr) {
+  return new Date(dateStr).toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' });
+}
+function todayStr() {
+  return new Date().toISOString().split('T')[0];
+}
+function addDays(dateStr, n) {
+  const d = new Date(dateStr);
+  d.setDate(d.getDate() + n);
+  return d.toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' });
+}
+
+// ── Task stats ───────────────────────────────────────────────
+function getTaskStats() {
+  let total = 0, done = 0;
+  for (const phase of ROADMAP.phases) {
+    for (const block of phase.blocks) {
+      for (const task of block.tasks) {
+        total++;
+        if (state.tasks[task.id]) done++;
+      }
+    }
+  }
+  return { total, done };
+}
+function getPhaseStats(phase) {
+  let total = 0, done = 0;
+  for (const block of phase.blocks) {
+    for (const task of block.tasks) {
+      total++;
+      if (state.tasks[task.id]) done++;
+    }
+  }
+  const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+  return { total, done, pct };
+}
+
+// ── Current phase ────────────────────────────────────────────
+function getCurrentPhase() {
+  const day = getDayNumber();
+  let current = ROADMAP.phases[0];
+  for (const phase of ROADMAP.phases) {
+    if (day >= phase.dayStart) current = phase;
+  }
+  return current;
+}
+
+// ── Streak ───────────────────────────────────────────────────
+function getStreak() {
+  const today = todayStr();
+  let streak = 0;
+  let d = new Date();
+  while (true) {
+    const key = d.toISOString().split('T')[0];
+    if (state.dailyLog[key]) {
+      streak++;
+      d.setDate(d.getDate() - 1);
+    } else {
+      break;
+    }
+  }
+  return streak;
+}
+
+// ── Render sidebar ───────────────────────────────────────────
+function renderSidebar() {
+  const day = getDayNumber();
+  const { total, done } = getTaskStats();
+  const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+
+  // Percent
+  document.getElementById('overall-percent').textContent = pct + '%';
+  document.getElementById('ring-tasks').textContent = `${done}/${total}`;
+  const circumference = 314.159;
+  const offset = circumference - (pct / 100) * circumference;
+  document.getElementById('ring-fill').style.strokeDashoffset = offset;
+
+  // Time
+  const daysElapsed = state.startDate ? Math.max(0, day - 1) : 0;
+  const daysLeft = Math.max(0, 900 - daysElapsed);
+  document.getElementById('days-elapsed').textContent = daysElapsed;
+  document.getElementById('days-left').textContent = daysLeft;
+  if (state.startDate) {
+    document.getElementById('eta-date').textContent = addDays(state.startDate, 900);
+  }
+
+  // Phase nav
+  const phaseNav = document.getElementById('phase-nav');
+  phaseNav.innerHTML = '';
+  for (const phase of ROADMAP.phases) {
+    const { pct: ppct } = getPhaseStats(phase);
+    const div = document.createElement('div');
+    div.className = 'phase-nav-item';
+    div.innerHTML = `
+      <span class="pni-icon">${phase.icon}</span>
+      <span class="pni-text">Phase ${phase.number}: ${phase.title}</span>
+      <span class="pni-pct" style="color:${phase.color}">${ppct}%</span>
+    `;
+    div.addEventListener('click', () => {
+      switchTab('phases');
+      setTimeout(() => {
+        const el = document.getElementById('phase-' + phase.id);
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
+    });
+    phaseNav.appendChild(div);
+  }
+
+  // Cert sidebar
+  const certSidebar = document.getElementById('cert-sidebar');
+  certSidebar.innerHTML = '';
+  for (const cert of ROADMAP.certifications) {
+    const done = !!state.certs[cert.id];
+    const div = document.createElement('div');
+    div.className = 'cert-item' + (done ? ' done' : '');
+    div.innerHTML = `
+      <span class="cert-day-badge">D${cert.day}</span>
+      <span class="cert-name">${cert.name}</span>
+      ${done ? '<span class="cert-done">✓</span>' : ''}
+    `;
+    certSidebar.appendChild(div);
+  }
+
+  // Streak
+  const streak = getStreak();
+  document.getElementById('streak-num').textContent = streak;
+  const logBtn = document.getElementById('log-today-btn');
+  const loggedToday = !!state.dailyLog[todayStr()];
+  logBtn.textContent = loggedToday ? 'LOGGED TODAY ✓' : 'LOG TODAY ✓';
+  logBtn.className = 'btn-log' + (loggedToday ? ' logged' : '');
+
+  // Streak grid (last 49 days)
+  const grid = document.getElementById('streak-grid');
+  grid.innerHTML = '';
+  const today = new Date();
+  for (let i = 48; i >= 0; i--) {
+    const d = new Date(today);
+    d.setDate(d.getDate() - i);
+    const key = d.toISOString().split('T')[0];
+    const cell = document.createElement('div');
+    cell.className = 'streak-cell' +
+      (state.dailyLog[key] ? ' logged' : '') +
+      (key === todayStr() ? ' today' : '');
+    cell.title = key;
+    grid.appendChild(cell);
+  }
+}
+
+// ── Nav day display ──────────────────────────────────────────
+function renderNavDay() {
+  const day = getDayNumber();
+  document.getElementById('current-day-num').textContent = state.startDate ? day : '—';
+}
+
+// ── Dashboard ────────────────────────────────────────────────
+function renderDashboard() {
+  renderCurrentPhaseCard();
+  renderCheckpointCards();
+  renderCertTimeline();
+}
+
+function renderCurrentPhaseCard() {
+  const phase = getCurrentPhase();
+  const { done, total, pct } = getPhaseStats(phase);
+  const container = document.getElementById('current-phase-card');
+  container.innerHTML = `
+    <div class="current-phase-card" style="--phase-color:${phase.color}">
+      <div class="cpc-header">
+        <div class="cpc-icon">${phase.icon}</div>
+        <div class="cpc-meta">
+          <div class="cpc-phase-num">PHASE ${phase.number} OF 8</div>
+          <div class="cpc-title">${phase.title}</div>
+          <div class="cpc-days">${phase.days}</div>
         </div>
       </div>
-
-      <!-- PHASES TAB -->
-      <div id="tab-phases" class="tab-content">
-        <div class="page-header">
-          <div class="page-eyebrow">// ALL PHASES</div>
-          <h1>Track Your Tasks</h1>
-        </div>
-        <div id="phases-container"></div>
+      <div class="cpc-goal">${phase.goal}</div>
+      <div class="cpc-progress-bar">
+        <div class="cpc-progress-fill" style="width:${pct}%; background:${phase.color}"></div>
       </div>
+      <div class="cpc-progress-label">${done}/${total} tasks complete — ${pct}%</div>
+    </div>
+  `;
+}
 
-      <!-- CHECKPOINTS TAB -->
-      <div id="tab-checkpoints" class="tab-content">
-        <div class="page-header">
-          <div class="page-eyebrow">// BRUTAL CHECKPOINTS</div>
-          <h1>The Timestamps Don't Lie</h1>
-          <p class="page-subtitle">These are pass/fail. Not suggestions.</p>
-        </div>
-        <div id="checkpoints-container"></div>
+function renderCheckpointCards() {
+  const day = getDayNumber();
+  const container = document.getElementById('checkpoint-cards');
+  container.innerHTML = '<div class="checkpoint-grid"></div>';
+  const grid = container.querySelector('.checkpoint-grid');
+
+  const upcoming = ROADMAP.checkpoints
+    .filter(cp => !state.checkpointsPassed[cp.day])
+    .slice(0, 4);
+
+  if (upcoming.length === 0) {
+    grid.innerHTML = '<div style="color:var(--accent);padding:1rem">🎉 All checkpoints passed. You are in the 1%.</div>';
+    return;
+  }
+
+  for (const cp of upcoming) {
+    const isPast = day > cp.day;
+    const isCurrent = day >= cp.day - 30 && day <= cp.day + 30;
+    const div = document.createElement('div');
+    div.className = 'cp-card ' + (isPast ? 'passed' : isCurrent ? 'active-cp' : 'future');
+    const statusLabel = isPast ? '<span class="cp-status pass">SHOULD BE DONE</span>'
+      : isCurrent ? '<span class="cp-status current">APPROACHING</span>'
+      : '<span class="cp-status upcoming">UPCOMING</span>';
+    div.innerHTML = `
+      <div class="cp-card-day">DAY ${cp.day}</div>
+      <div class="cp-card-title">${cp.title}</div>
+      ${statusLabel}
+      <div class="cp-toggle" data-cp="${cp.day}">▼ View questions</div>
+    `;
+    div.querySelector('.cp-toggle').addEventListener('click', () => showCheckpointModal(cp));
+    grid.appendChild(div);
+  }
+}
+
+function showCheckpointModal(cp) {
+  const day = getDayNumber();
+  const modal = document.getElementById('checkpoint-modal');
+  document.getElementById('cp-label').textContent = `// DAY ${cp.day} CHECKPOINT`;
+  document.getElementById('cp-title').textContent = cp.title;
+  const qContainer = document.getElementById('cp-questions');
+  qContainer.innerHTML = cp.questions.map(q =>
+    `<div class="cp-question"><span class="cp-q-icon">→</span><span>${q}</span></div>`
+  ).join('');
+  modal.classList.remove('hidden');
+}
+
+function renderCertTimeline() {
+  const container = document.getElementById('cert-timeline');
+  const day = getDayNumber();
+  container.innerHTML = '<div class="cert-timeline-grid"></div>';
+  const grid = container.querySelector('.cert-timeline-grid');
+
+  ROADMAP.certifications.forEach((cert, i) => {
+    const isDone = !!state.certs[cert.id];
+    const isNext = !isDone && ROADMAP.certifications.slice(0, i).every(c => state.certs[c.id]);
+    const isLast = i === ROADMAP.certifications.length - 1;
+
+    const div = document.createElement('div');
+    div.className = 'ct-item ' + (isDone ? 'done' : isNext ? 'next-up' : '') + (isLast ? ' ct-last' : '');
+    div.innerHTML = `
+      <div class="ct-day">Day ${cert.day}</div>
+      <div class="ct-line-col">
+        <div class="ct-dot"></div>
+        <div class="ct-connector"></div>
       </div>
-
-      <!-- NOTES TAB -->
-      <div id="tab-notes" class="tab-content">
-        <div class="page-header">
-          <div class="page-eyebrow">// DAILY LOG</div>
-          <h1>What Did You Do Today?</h1>
-          <p class="page-subtitle">One paragraph per day. Timestamps prove consistency.</p>
+      <div class="ct-info">
+        <div class="ct-name">${cert.name}</div>
+        <div class="ct-meta">
+          <span class="ct-cost">${cert.cost}</span>
+          <span class="ct-priority ${cert.priority}">${cert.priority}</span>
         </div>
-        <div class="notes-toolbar">
-          <input type="text" id="notes-search" placeholder="Search notes..." />
-          <button class="btn-primary" id="add-note-btn">+ ADD TODAY'S LOG</button>
-        </div>
-        <div id="notes-container"></div>
+        <button class="cert-done-btn ${isDone ? 'earned' : ''}" data-cert="${cert.id}">
+          ${isDone ? '✓ EARNED' : 'MARK AS EARNED'}
+        </button>
       </div>
+    `;
+    div.querySelector('.cert-done-btn').addEventListener('click', (e) => {
+      if (!state.certs[cert.id]) {
+        state.certs[cert.id] = true;
+        save();
+        renderAll();
+      }
+    });
+    grid.appendChild(div);
+  });
+}
 
-    </main>
-  </div>
+// ── Phases tab ───────────────────────────────────────────────
+function renderPhases() {
+  const container = document.getElementById('phases-container');
+  container.innerHTML = '';
 
-  <!-- BOTTOM NAV (tabs) -->
-  <nav id="bottom-nav">
-    <button class="tab-btn active" data-tab="dashboard">📊 DASHBOARD</button>
-    <button class="tab-btn" data-tab="phases">📋 PHASES</button>
-    <button class="tab-btn" data-tab="checkpoints">⚠️ CHECKPOINTS</button>
-    <button class="tab-btn" data-tab="notes">📝 DAILY LOG</button>
-  </nav>
+  ROADMAP.phases.forEach((phase, pi) => {
+    const { done, total, pct } = getPhaseStats(phase);
+    const div = document.createElement('div');
+    div.className = 'phase-block';
+    div.id = 'phase-' + phase.id;
+    div.style.setProperty('--phase-color', phase.color);
+    div.style.animationDelay = (pi * 0.05) + 's';
 
-  <script src="data/roadmap.js"></script>
-  <script src="js/app.js"></script>
+    const blocksHtml = phase.blocks.map(block => {
+      const tasksHtml = block.tasks.map(task => {
+        const isDone = !!state.tasks[task.id];
+        const badge = getBadge(task.type);
+        return `
+          <div class="task-item ${isDone ? 'done' : ''}" data-task="${task.id}">
+            <div class="task-cb"><span class="task-cb-check">✓</span></div>
+            <span class="task-text">${task.text}</span>
+            ${badge}
+          </div>
+        `;
+      }).join('');
+      return `
+        <div class="block-group">
+          <div class="block-title">${block.title}</div>
+          ${tasksHtml}
+        </div>
+      `;
+    }).join('');
+
+    div.innerHTML = `
+      <div class="phase-header" data-phase="${phase.id}">
+        <div class="ph-icon">${phase.icon}</div>
+        <div class="ph-meta">
+          <div class="ph-num">PHASE ${phase.number}</div>
+          <div class="ph-title">${phase.title}</div>
+          <div class="ph-days">${phase.days}</div>
+        </div>
+        <div class="ph-right">
+          <div class="ph-pct" style="color:${phase.color}">${pct}%</div>
+          <div class="ph-tasks-count">${done}/${total} tasks</div>
+        </div>
+        <div class="ph-toggle">▼</div>
+      </div>
+      <div class="phase-progress">
+        <div class="phase-progress-fill" style="width:${pct}%; background:${phase.color}"></div>
+      </div>
+      <div class="phase-body" id="body-${phase.id}">
+        <div class="phase-goal">${phase.goal}</div>
+        <div class="phase-warning">⚠️ ${phase.warning}</div>
+        ${blocksHtml}
+      </div>
+    `;
+
+    // Toggle open/close
+    div.querySelector('.phase-header').addEventListener('click', () => {
+      const body = document.getElementById('body-' + phase.id);
+      const toggle = div.querySelector('.ph-toggle');
+      body.classList.toggle('open');
+      toggle.classList.toggle('open');
+    });
+
+    // Task checkboxes
+    div.querySelectorAll('.task-item').forEach(taskEl => {
+      taskEl.addEventListener('click', () => {
+        const id = taskEl.dataset.task;
+        if (state.tasks[id]) {
+          delete state.tasks[id];
+        } else {
+          state.tasks[id] = true;
+        }
+        save();
+        renderAll();
+      });
+    });
+
+    container.appendChild(div);
+  });
+
+  // Auto-open current phase
+  const current = getCurrentPhase();
+  const body = document.getElementById('body-' + current.id);
+  const toggle = document.querySelector('#phase-' + current.id + ' .ph-toggle');
+  if (body) { body.classList.add('open'); }
+  if (toggle) { toggle.classList.add('open'); }
+}
+
+function getBadge(type) {
+  const map = {
+    milestone: ['MILESTONE', 'milestone'],
+    project: ['PROJECT', 'project'],
+    platform: ['PLATFORM', 'platform'],
+    ctf: ['CTF', 'ctf'],
+    cert: ['CERT', 'cert'],
+    lab: ['LAB', 'lab'],
+    setup: ['SETUP', 'setup'],
+    apply: ['APPLY', 'apply'],
+    resource: ['', ''],
+    learn: ['', ''],
+    practice: ['', ''],
+    community: ['', ''],
+    mindset: ['', ''],
+  };
+  const [label, cls] = map[type] || ['', ''];
+  if (!label) return '';
+  return `<span class="task-badge badge-${cls}">${label}</span>`;
+}
+
+// ── Checkpoints tab ──────────────────────────────────────────
+function renderCheckpoints() {
+  const container = document.getElementById('checkpoints-container');
+  const day = getDayNumber();
+  container.innerHTML = '<div class="checkpoint-full-grid"></div>';
+  const grid = container.querySelector('.checkpoint-full-grid');
+
+  for (const cp of ROADMAP.checkpoints) {
+    const isPast = day > cp.day;
+    const isCurrent = day >= cp.day - 30 && day <= cp.day;
+    const isPassed = !!state.checkpointsPassed[cp.day];
+
+    const div = document.createElement('div');
+    div.className = 'cp-full-card ' + (isPassed ? 'passed' : isCurrent ? 'active-cp' : '');
+
+    const statusText = isPassed ? 'PASSED ✓' : isPast ? 'OVERDUE — ASSESS YOURSELF' : isCurrent ? 'APPROACHING' : 'LOCKED';
+    const statusCls = isPassed ? 'pass' : isCurrent ? 'current' : 'future';
+
+    const questionsHtml = cp.questions.map(q =>
+      `<div class="cpf-q">
+        <span class="cpf-q-icon">→</span>
+        <span>${q}</span>
+      </div>`
+    ).join('');
+
+    const btnCls = isPassed ? 'marked' : (!isPast && !isCurrent) ? 'future-btn' : '';
+    const btnText = isPassed ? '✓ CHECKPOINT PASSED' : 'MARK AS PASSED';
+
+    div.innerHTML = `
+      <div class="cpf-day">DAY ${cp.day}</div>
+      <div class="cpf-title">${cp.title}</div>
+      <div class="cpf-status ${statusCls}">${statusText}</div>
+      <div class="cpf-questions">${questionsHtml}</div>
+      <button class="cp-mark-btn ${btnCls}" data-cp="${cp.day}">${btnText}</button>
+    `;
+
+    const btn = div.querySelector('.cp-mark-btn');
+    if (!isPassed && (isPast || isCurrent)) {
+      btn.addEventListener('click', () => {
+        state.checkpointsPassed[cp.day] = true;
+        save();
+        renderAll();
+      });
+    }
+
+    grid.appendChild(div);
+  }
+}
+
+// ── Notes tab ────────────────────────────────────────────────
+function renderNotes(filter = '') {
+  const container = document.getElementById('notes-container');
+  container.innerHTML = '';
+
+  let notes = [...state.notes].reverse();
+  if (filter) {
+    notes = notes.filter(n => n.text.toLowerCase().includes(filter.toLowerCase()));
+  }
+
+  if (notes.length === 0) {
+    container.innerHTML = `<div class="notes-empty">No logs yet. Hit "ADD TODAY'S LOG" and document what you did. Consistency is evidence.</div>`;
+    return;
+  }
+
+  for (const note of notes) {
+    const div = document.createElement('div');
+    div.className = 'note-card';
+    div.innerHTML = `
+      <div class="note-header">
+        <span class="note-day">Day ${note.dayNum || '—'}</span>
+        <span class="note-date">${note.date}</span>
+        <button class="note-delete" data-id="${note.id}">✕</button>
+      </div>
+      <div class="note-text">${escapeHtml(note.text)}</div>
+    `;
+    div.querySelector('.note-delete').addEventListener('click', () => {
+      state.notes = state.notes.filter(n => n.id !== note.id);
+      save();
+      renderNotes(document.getElementById('notes-search').value);
+    });
+    container.appendChild(div);
+  }
+}
+
+function showAddNoteForm() {
+  const container = document.getElementById('notes-container');
+  if (container.querySelector('.note-add-form')) return;
+
+  const form = document.createElement('div');
+  form.className = 'note-add-form';
+  form.innerHTML = `
+    <textarea placeholder="What did you learn today? What broke? What did you fix? Be specific. Specificity is proof."></textarea>
+    <div class="note-form-actions">
+      <button class="btn-primary" id="save-note-btn">SAVE LOG</button>
+      <button class="btn-secondary" id="cancel-note-btn">CANCEL</button>
+    </div>
+  `;
+  container.insertBefore(form, container.firstChild);
+
+  form.querySelector('#save-note-btn').addEventListener('click', () => {
+    const text = form.querySelector('textarea').value.trim();
+    if (!text) return;
+    const note = {
+      id: Date.now().toString(),
+      date: formatDate(todayStr()),
+      dayNum: getDayNumber(),
+      text
+    };
+    state.notes.push(note);
+    save();
+    renderNotes();
+  });
+  form.querySelector('#cancel-note-btn').addEventListener('click', () => {
+    form.remove();
+  });
+  form.querySelector('textarea').focus();
+}
+
+function escapeHtml(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+// ── Tab switching ────────────────────────────────────────────
+function switchTab(name) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  document.querySelector(`.tab-btn[data-tab="${name}"]`).classList.add('active');
+  if (name === 'phases') renderPhases();
+  if (name === 'checkpoints') renderCheckpoints();
+  if (name === 'notes') renderNotes();
+  if (name === 'dashboard') renderDashboard();
+}
+
+// ── Full render ──────────────────────────────────────────────
+function renderAll() {
+  renderNavDay();
+  renderSidebar();
+  // Only re-render active tab
+  const active = document.querySelector('.tab-content.active');
+  if (!active) return;
+  const id = active.id.replace('tab-', '');
+  if (id === 'dashboard') renderDashboard();
+  if (id === 'phases') renderPhases();
+  if (id === 'checkpoints') renderCheckpoints();
+  if (id === 'notes') renderNotes(document.getElementById('notes-search')?.value || '');
+}
+
+// ── Setup modal ──────────────────────────────────────────────
+function showSetupModal() {
+  document.getElementById('setup-modal').classList.remove('hidden');
+  const inp = document.getElementById('start-date-input');
+  inp.value = todayStr();
+}
+function hideSetupModal() {
+  document.getElementById('setup-modal').classList.add('hidden');
+}
+
+// ── Boot ─────────────────────────────────────────────────────
+function init() {
+  load();
+
+  // After boot animation
+  setTimeout(() => {
+    if (!state.startDate) {
+      showSetupModal();
+    } else {
+      renderAll();
+    }
+  }, 3100);
+
+  // Tab buttons
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+  });
+
+  // Set start date
+  document.getElementById('set-start-btn').addEventListener('click', () => {
+    const val = document.getElementById('start-date-input').value;
+    if (!val) return;
+    state.startDate = val;
+    save();
+    hideSetupModal();
+    renderAll();
+  });
+
+  // Reset
+  document.getElementById('reset-btn').addEventListener('click', () => {
+    document.getElementById('reset-modal').classList.remove('hidden');
+  });
+  document.getElementById('confirm-reset-btn').addEventListener('click', () => {
+    state = { startDate: null, tasks: {}, certs: {}, checkpointsPassed: {}, notes: [], dailyLog: {} };
+    save();
+    document.getElementById('reset-modal').classList.add('hidden');
+    showSetupModal();
+  });
+  document.getElementById('cancel-reset-btn').addEventListener('click', () => {
+    document.getElementById('reset-modal').classList.add('hidden');
+  });
+
+  // Change date
+  document.getElementById('change-date-btn').addEventListener('click', () => showSetupModal());
+
+  // Close checkpoint modal
+  document.getElementById('cp-close-btn').addEventListener('click', () => {
+    document.getElementById('checkpoint-modal').classList.add('hidden');
+  });
+
+  // Daily log button
+  document.getElementById('log-today-btn').addEventListener('click', () => {
+    const today = todayStr();
+    if (!state.dailyLog[today]) {
+      state.dailyLog[today] = true;
+      save();
+      renderSidebar();
+    }
+  });
+
+  // Add note
+  document.getElementById('add-note-btn').addEventListener('click', showAddNoteForm);
+
+  // Notes search
+  document.getElementById('notes-search').addEventListener('input', (e) => {
+    renderNotes(e.target.value);
+  });
+
+  // Dashboard initial render (happens after boot)
+}
+
+init();
+
+</script>
 </body>
 </html>
