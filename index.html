@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Purple Team Roadmap — 900 Days to Top 1%</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- BOOT SCREEN -->
+  <div id="boot-screen">
+    <div class="boot-content">
+      <div class="boot-logo">GREESH<span>SEC</span></div>
+      <div class="boot-bar-wrap"><div class="boot-bar"></div></div>
+      <div class="boot-text" id="boot-text">INITIALIZING ROADMAP SYSTEM...</div>
+    </div>
+  </div>
+
+  <!-- SETUP MODAL -->
+  <div id="setup-modal" class="modal-overlay hidden">
+    <div class="modal-box">
+      <div class="modal-label">// SYSTEM INITIALIZATION</div>
+      <h2>When did you start?</h2>
+      <p>Enter your Day 0 — the day you committed to this roadmap. Everything tracks from here.</p>
+      <input type="date" id="start-date-input" />
+      <button class="btn-primary" id="set-start-btn">INITIALIZE TRACKER</button>
+      <p class="modal-note">This is stored locally on your device. Nothing is sent anywhere.</p>
+    </div>
+  </div>
+
+  <!-- RESET CONFIRM MODAL -->
+  <div id="reset-modal" class="modal-overlay hidden">
+    <div class="modal-box">
+      <div class="modal-label">// WARNING</div>
+      <h2>Reset ALL Progress?</h2>
+      <p>This will delete your start date and ALL checked tasks. This cannot be undone.</p>
+      <div class="modal-buttons">
+        <button class="btn-danger" id="confirm-reset-btn">YES, RESET EVERYTHING</button>
+        <button class="btn-secondary" id="cancel-reset-btn">CANCEL</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHECKPOINT MODAL -->
+  <div id="checkpoint-modal" class="modal-overlay hidden">
+    <div class="modal-box checkpoint-box">
+      <div class="modal-label" id="cp-label">// CHECKPOINT</div>
+      <h2 id="cp-title"></h2>
+      <div id="cp-questions"></div>
+      <button class="btn-primary" id="cp-close-btn">ACKNOWLEDGED</button>
+    </div>
+  </div>
+
+  <!-- TOP NAV -->
+  <nav id="top-nav">
+    <div class="nav-brand">GREESH<span>SEC</span></div>
+    <div class="nav-center" id="day-display">
+      <span class="nav-label">CURRENT DAY</span>
+      <span class="nav-day" id="current-day-num">—</span>
+      <span class="nav-label">/ 900</span>
+    </div>
+    <div class="nav-actions">
+      <button class="btn-ghost" id="reset-btn">RESET</button>
+      <button class="btn-ghost" id="change-date-btn">CHANGE DATE</button>
+    </div>
+  </nav>
+
+  <!-- MAIN LAYOUT -->
+  <div id="main-layout">
+
+    <!-- SIDEBAR -->
+    <aside id="sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-label">OVERALL PROGRESS</div>
+        <div class="big-percent" id="overall-percent">0%</div>
+        <div class="progress-ring-wrap">
+          <svg class="progress-ring" viewBox="0 0 120 120">
+            <circle class="ring-bg" cx="60" cy="60" r="50"/>
+            <circle class="ring-fill" id="ring-fill" cx="60" cy="60" r="50"
+              stroke-dasharray="314.159" stroke-dashoffset="314.159"/>
+          </svg>
+          <div class="ring-inner">
+            <div class="ring-tasks" id="ring-tasks">0/0</div>
+            <div class="ring-label">TASKS</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-label">TIME TRACKER</div>
+        <div class="time-stat">
+          <span class="ts-val" id="days-elapsed">0</span>
+          <span class="ts-key">DAYS IN</span>
+        </div>
+        <div class="time-stat">
+          <span class="ts-val" id="days-left">900</span>
+          <span class="ts-key">DAYS LEFT</span>
+        </div>
+        <div class="time-stat">
+          <span class="ts-val" id="eta-date">—</span>
+          <span class="ts-key">ETA</span>
+        </div>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-label">PHASES</div>
+        <div id="phase-nav"></div>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-label">CERTIFICATIONS</div>
+        <div id="cert-sidebar"></div>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-label">DAILY 3HRS LOG</div>
+        <div class="streak-display">
+          <span class="streak-num" id="streak-num">0</span>
+          <span class="streak-label">DAY STREAK</span>
+        </div>
+        <button class="btn-log" id="log-today-btn">LOG TODAY ✓</button>
+        <div class="streak-grid" id="streak-grid"></div>
+      </div>
+    </aside>
+
+    <!-- CONTENT -->
+    <main id="content">
+
+      <!-- DASHBOARD TAB -->
+      <div id="tab-dashboard" class="tab-content active">
+        <div class="page-header">
+          <div class="page-title-block">
+            <div class="page-eyebrow">// MISSION CONTROL</div>
+            <h1>Purple Team Roadmap</h1>
+            <p class="page-subtitle">Fresher → Top 1% | 900 Days | No Sugar Coating</p>
+          </div>
+          <div class="ground-truth-box">
+            <div class="gt-label">GROUND TRUTH</div>
+            <div class="gt-items">
+              <div class="gt-item">AI replaces tool monkeys. Not system thinkers.</div>
+              <div class="gt-item">Your degree means nothing. GitHub and certs do.</div>
+              <div class="gt-item">90% quit by Day 60. You are in the 10%.</div>
+              <div class="gt-item">Purple Team = less than 5% of security professionals.</div>
+              <div class="gt-item">3 hours minimum. Every single day.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-label">// CURRENT PHASE</div>
+        <div id="current-phase-card"></div>
+
+        <div class="section-label">// UPCOMING CHECKPOINTS</div>
+        <div id="checkpoint-cards"></div>
+
+        <div class="section-label">// CERTIFICATION TIMELINE</div>
+        <div id="cert-timeline"></div>
+
+        <div class="section-label">// WEEKLY SCHEDULE</div>
+        <div class="week-schedule">
+          <div class="day-card"><div class="day-name">MON</div><div class="day-task">Learn new concept — deep reading, no shortcuts</div></div>
+          <div class="day-card"><div class="day-name">TUE</div><div class="day-task">Hands-on lab — implement what you read</div></div>
+          <div class="day-card"><div class="day-name">WED</div><div class="day-task">CTF challenge or HackTheBox machine</div></div>
+          <div class="day-card"><div class="day-name">THU</div><div class="day-task">Write and document — blog, GitHub README, report</div></div>
+          <div class="day-card"><div class="day-name">FRI</div><div class="day-task">Review week, fix what broke, catch up</div></div>
+          <div class="day-card"><div class="day-name">SAT</div><div class="day-task">Longer project work — SOC lab, cloud lab, scripts</div></div>
+          <div class="day-card"><div class="day-name">SUN</div><div class="day-task">Community — Discord, LinkedIn post, read writeups</div></div>
+        </div>
+
+        <div class="section-label">// GITHUB PORTFOLIO STRUCTURE</div>
+        <div class="code-block">
+          <pre>github.com/YourName/
+│
+├── security-scripts/
+│   ├── log-parser.py          ← Phase 1
+│   ├── port-scanner.py        ← Phase 1
+│   ├── file-hasher.py         ← Phase 1
+│   ├── http-header-grabber.py ← Phase 1
+│   ├── virustotal-api.py      ← Phase 2
+│   ├── alienvault-otx.py      ← Phase 2
+│   ├── soar-automation.py     ← Phase 5
+│   ├── threat-feed-checker.py ← Phase 5
+│   └── README.md
+│
+├── SOC-lab/
+│   ├── architecture-diagram.png
+│   ├── wazuh-rules/
+│   ├── attack-scenarios/ (5 full reports)
+│   └── README.md
+│
+├── purple-team-exercise/
+│   ├── MITRE-coverage-map.xlsx
+│   ├── technique-reports/ (10 attack-detection pairs)
+│   └── executive-summary.pdf
+│
+├── cloud-security/
+│   ├── gcp-attack-defense/
+│   ├── iam-misconfiguration-lab/
+│   └── README.md
+│
+├── ctf-writeups/
+│   ├── hackthebox/
+│   ├── tryhackme/
+│   └── index.md
+│
+└── research/
+    ├── ai-security-assessment/
+    └── datacenter-security-analysis/</pre>
+        </div>
+      </div>
+
+      <!-- PHASES TAB -->
+      <div id="tab-phases" class="tab-content">
+        <div class="page-header">
+          <div class="page-eyebrow">// ALL PHASES</div>
+          <h1>Track Your Tasks</h1>
+        </div>
+        <div id="phases-container"></div>
+      </div>
+
+      <!-- CHECKPOINTS TAB -->
+      <div id="tab-checkpoints" class="tab-content">
+        <div class="page-header">
+          <div class="page-eyebrow">// BRUTAL CHECKPOINTS</div>
+          <h1>The Timestamps Don't Lie</h1>
+          <p class="page-subtitle">These are pass/fail. Not suggestions.</p>
+        </div>
+        <div id="checkpoints-container"></div>
+      </div>
+
+      <!-- NOTES TAB -->
+      <div id="tab-notes" class="tab-content">
+        <div class="page-header">
+          <div class="page-eyebrow">// DAILY LOG</div>
+          <h1>What Did You Do Today?</h1>
+          <p class="page-subtitle">One paragraph per day. Timestamps prove consistency.</p>
+        </div>
+        <div class="notes-toolbar">
+          <input type="text" id="notes-search" placeholder="Search notes..." />
+          <button class="btn-primary" id="add-note-btn">+ ADD TODAY'S LOG</button>
+        </div>
+        <div id="notes-container"></div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- BOTTOM NAV (tabs) -->
+  <nav id="bottom-nav">
+    <button class="tab-btn active" data-tab="dashboard">📊 DASHBOARD</button>
+    <button class="tab-btn" data-tab="phases">📋 PHASES</button>
+    <button class="tab-btn" data-tab="checkpoints">⚠️ CHECKPOINTS</button>
+    <button class="tab-btn" data-tab="notes">📝 DAILY LOG</button>
+  </nav>
+
+  <script src="data/roadmap.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
